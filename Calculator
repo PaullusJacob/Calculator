@@ -292,3 +292,7 @@ public class Calculator extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
     }
     }
+
+
+
+
