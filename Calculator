@@ -2,24 +2,82 @@
 //Calculator.java
 
 import javax.swing.*;
-import java.awt.BorderLayout;
 import java.awt.event.*;
 
 public class Calculator extends JFrame implements ActionListener {
 
-    int tempOper = 0;
-    int tempNumOne = -1;
-    int tempNumTwo = -1;
-    int tempEqual = -1;
-    int lastEntry = -1;
+    int tempOper[] = {0};
+    long tempNumOne[] = {-1};
+    long tempNumTwo[] = {-1};
+    long tempEqual[] = {-1};
+    int lastEntry[] = {-1};
+    int currentSetting[] = {2};
+
+    JToolBar toolBar = new JToolBar();
+    JButton btnView = new JButton("View");
+    JButton btnEdit = new JButton("Edit");
+    JButton btnHelp = new JButton("Help");
+    JTextArea textArea = new JTextArea();
+    JRadioButton rdbtnHex = new JRadioButton("Hex");
+    JRadioButton rdbtnDec = new JRadioButton("Dec");
+    JRadioButton rdbtnOct = new JRadioButton("Oct");
+    JRadioButton rdbtnBin = new JRadioButton("Bin");
+    JRadioButton rdbtnQword = new JRadioButton("Qword");
+    JRadioButton rdbtnDword = new JRadioButton("Dword");
+    JRadioButton rdbtnWord = new JRadioButton("Word");
+    JRadioButton rdbtnByte = new JRadioButton("Byte");
+    JButton blank2 = new JButton("");
+    JButton blank1 = new JButton("");
+    JButton btnA = new JButton("A");
+    JButton btnMc = new JButton("");
+    JButton btnMr = new JButton("");
+    JButton btnMs = new JButton("");
+    JButton btnM = new JButton("");
+    JButton blank4 = new JButton("");
+    JButton blank3 = new JButton("");
+    JButton btnB = new JButton("B");
+    JButton btnbs = new JButton("\u2190");
+    JButton btnCe = new JButton("ce");
+    JButton btnC = new JButton("c");
+    JButton btnpm = new JButton("\u00B1");
+    JButton btnnum7 = new JButton("7");
+    JButton blank6 = new JButton("");
+    JButton blank5 = new JButton("");
+    JButton btndiv = new JButton("/");
+    JButton btnC_1 = new JButton("C");
+    JButton btnnum8 = new JButton("8");
+    JButton btnnum9 = new JButton("9");
+    JButton blank8 = new JButton("");
+    JButton blank7 = new JButton("");
+    JButton btnD = new JButton("D");
+    JButton btnnum4 = new JButton("4");
+    JButton btnnum5 = new JButton("5");
+    JButton btnmult = new JButton("*");
+    JButton button_25 = new JButton("6");
+    JButton btnEqual = new JButton("=");
+    JButton btnI = new JButton("I");
+    JButton btnsqr = new JButton("\u221A");
+    JButton btnM_1 = new JButton("");
+    JButton btnplus = new JButton("+");
+    JButton btnsqr9 = new JButton(".");
+    JButton btnsqr7 = new JButton("0");
+    JButton blank12 = new JButton("");
+    JButton btnmod = new JButton("%");
+    JButton btnF = new JButton("F");
+    JButton blank11 = new JButton("");
+    JButton btnsqr3 = new JButton("-");
+    JButton btnsqr2 = new JButton("3");
+    JButton btnsqr1 = new JButton("2");
+    JButton btnsqr0 = new JButton("1");
+    JButton btnE = new JButton("E");
+    JButton blank9 = new JButton("");
+    JButton blank10 = new JButton("");
 
 
     public Calculator() {
-        JToolBar toolBar = new JToolBar();
         toolBar.setBounds(0, 0, 120, 16);
         getContentPane().add(toolBar);
 
-        JButton btnView = new JButton("View");
         toolBar.add(btnView);
         btnView.addActionListener(new ActionListener() {
             @Override
@@ -28,7 +86,6 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        JButton btnEdit = new JButton("Edit");
         toolBar.add(btnEdit);
         btnEdit.addActionListener(new ActionListener() {
             @Override
@@ -37,7 +94,6 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        JButton btnHelp = new JButton("Help");
         toolBar.add(btnHelp);
         btnHelp.addActionListener(new ActionListener() {
             @Override
@@ -46,53 +102,32 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        JTextArea textArea = new JTextArea();
         textArea.setBounds(28, 27, 482, 64);
         getContentPane().add(textArea);
 
-        JRadioButton rdbtnHex = new JRadioButton("Hex");
-        rdbtnHex.setBounds(28, 157, 45, 23);
+        rdbtnHex.setBounds(28, 157, 57, 23);
         getContentPane().add(rdbtnHex);
-        rdbtnHex.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        rdbtnHex.setSelected(false);
+        rdbtnHex.addActionListener(this);
 
-            }
-        });
-
-        JRadioButton rdbtnDec = new JRadioButton("Dec");
-        rdbtnDec.setBounds(28, 178, 45, 23);
+        rdbtnDec.setBounds(28, 178, 57, 23);
         getContentPane().add(rdbtnDec);
-        rdbtnDec.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        rdbtnDec.setSelected(true);
+        rdbtnDec.addActionListener(this);
 
-            }
-        });
-
-        JRadioButton rdbtnOct = new JRadioButton("Oct");
-        rdbtnOct.setBounds(28, 199, 45, 23);
+        rdbtnOct.setBounds(28, 199, 57, 23);
         getContentPane().add(rdbtnOct);
-        rdbtnOct.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        rdbtnOct.setSelected(false);
+        rdbtnOct.addActionListener(this);
 
-            }
-        });
-
-        JRadioButton rdbtnBin = new JRadioButton("Bin");
-        rdbtnBin.setBounds(28, 220, 45, 23);
+        rdbtnBin.setBounds(28, 220, 57, 23);
         getContentPane().add(rdbtnBin);
-        rdbtnBin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        rdbtnBin.setSelected(false);
+        rdbtnBin.addActionListener(this);
 
-            }
-        });
-
-        JRadioButton rdbtnQword = new JRadioButton("Qword");
-        rdbtnQword.setBounds(28, 269, 57, 23);
+        rdbtnQword.setBounds(28, 269, 73, 23);
         getContentPane().add(rdbtnQword);
+        rdbtnQword.setSelected(true);
         rdbtnQword.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -100,9 +135,9 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        JRadioButton rdbtnDword = new JRadioButton("Dword");
-        rdbtnDword.setBounds(28, 290, 62, 23);
+        rdbtnDword.setBounds(28, 290, 73, 23);
         getContentPane().add(rdbtnDword);
+        rdbtnDword.setSelected(false);
         rdbtnDword.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -110,9 +145,9 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        JRadioButton rdbtnWord = new JRadioButton("Word");
-        rdbtnWord.setBounds(28, 311, 57, 23);
+        rdbtnWord.setBounds(28, 311, 73, 23);
         getContentPane().add(rdbtnWord);
+        rdbtnWord.setSelected(false);
         rdbtnWord.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -120,9 +155,9 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        JRadioButton rdbtnByte = new JRadioButton("Byte");
-        rdbtnByte.setBounds(28, 332, 57, 23);
+        rdbtnByte.setBounds(28, 332, 73, 23);
         getContentPane().add(rdbtnByte);
+        rdbtnByte.setSelected(false);
         rdbtnByte.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -130,15 +165,12 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        JButton blank2 = new JButton("");
         blank2.setBounds(170, 157, 45, 23);
         getContentPane().add(blank2);
 
-        JButton blank1 = new JButton("");
         blank1.setBounds(121, 157, 45, 23);
         getContentPane().add(blank1);
 
-        JButton btnA = new JButton("A");
         btnA.setBounds(219, 157, 45, 23);
         getContentPane().add(btnA);
         btnA.addActionListener(new ActionListener() {
@@ -148,50 +180,24 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        JButton btnMc = new JButton("mc");
         btnMc.setBounds(268, 157, 45, 23);
         getContentPane().add(btnMc);
-        btnMc.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
-        });
-
-        JButton btnMr = new JButton("mr");
         btnMr.setBounds(317, 157, 45, 23);
         getContentPane().add(btnMr);
-        btnMr.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
-        });
-
-        JButton btnMs = new JButton("ms");
         btnMs.setBounds(366, 157, 45, 23);
         getContentPane().add(btnMs);
-        btnMs.addActionListener(this);
 
-        JButton btnM = new JButton("m");
         btnM.setBounds(415, 157, 45, 23);
         getContentPane().add(btnM);
-        btnM.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
-        });
-
-        JButton blank4 = new JButton("");
         blank4.setBounds(170, 190, 45, 23);
         getContentPane().add(blank4);
 
-        JButton blank3 = new JButton("");
         blank3.setBounds(121, 190, 45, 23);
         getContentPane().add(blank3);
 
-        JButton btnB = new JButton("B");
         btnB.setBounds(219, 190, 45, 23);
         getContentPane().add(btnB);
         btnB.addActionListener(new ActionListener() {
@@ -201,70 +207,38 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        JButton button_9 = new JButton("\u2190");
-        button_9.setBounds(268, 190, 45, 23);
-        getContentPane().add(button_9);
-        button_9.addActionListener(new ActionListener() {
+        btnbs.setBounds(268, 190, 45, 23);
+        getContentPane().add(btnbs);
+        btnbs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
             }
         });
 
-        JButton btnCe = new JButton("ce");
         btnCe.setBounds(317, 190, 45, 23);
         getContentPane().add(btnCe);
-        btnCe.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (lastEntry != -1) {
-                    if (tempOper == 0 ) {
-                        tempNumOne = -1;
-                        textArea.setText(0 + "");
-                    }
-                    else {
-                        tempNumTwo = -1;
-                        textArea.setText(0 + "");
-                    }
-                }
+        btnCe.addActionListener(this);
 
-            }
-        });
-
-        JButton btnC = new JButton("c");
         btnC.setBounds(366, 190, 45, 23);
         getContentPane().add(btnC);
-        btnC.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                textArea.setText(0 + "");
-                tempNumOne = -1;
-                tempNumTwo = -1;
-                tempEqual = -1;
-                tempOper = 0;
+        btnC.addActionListener(this);
 
-            }
-        });
-
-        JButton button_12 = new JButton("\u00B1");
-        button_12.setBounds(415, 190, 45, 23);
-        getContentPane().add(button_12);
-        button_12.addActionListener(new ActionListener() {
+        btnpm.setBounds(415, 190, 45, 23);
+        getContentPane().add(btnpm);
+        btnpm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
             }
         });
 
-        JButton blank6 = new JButton("");
         blank6.setBounds(170, 224, 45, 23);
         getContentPane().add(blank6);
 
-        JButton blank5 = new JButton("");
         blank5.setBounds(121, 224, 45, 23);
         getContentPane().add(blank5);
 
-        JButton btnC_1 = new JButton("C");
         btnC_1.setBounds(219, 224, 45, 23);
         getContentPane().add(btnC_1);
         btnC_1.addActionListener(new ActionListener() {
@@ -274,113 +248,28 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        JButton button_16 = new JButton("7");
-        button_16.setBounds(268, 224, 45, 23);
-        getContentPane().add(button_16);
-        button_16.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                lastEntry = 7;
-                if (tempOper > 0) {
-                    if (tempNumTwo == -1) {
-                        tempNumTwo = 7;
-                        textArea.setText(tempNumTwo + "");
-                    } else {
-                        tempNumTwo = tempNumTwo * 10;
-                        tempNumTwo = tempNumTwo + 7;
-                        textArea.setText(tempNumTwo + "");
-                    }
+        btnnum7.setBounds(268, 224, 45, 23);
+        getContentPane().add(btnnum7);
+        btnnum7.addActionListener(this);
 
-                }
-                if (tempNumOne == -1) {
-                    tempNumOne = 7;
-                    textArea.setText(tempNumOne + "");
-                } else if (tempNumOne != -1 && tempOper == 0) {
-                    tempNumOne = tempNumOne * 10;
-                    tempNumOne = tempNumOne + 7;
-                    textArea.setText(tempNumOne + "");
-                }
-            }
-        });
+        btnnum8.setBounds(317, 224, 45, 23);
+        getContentPane().add(btnnum8);
+        btnnum8.addActionListener(this);
 
-        JButton button_17 = new JButton("8");
-        button_17.setBounds(317, 224, 45, 23);
-        getContentPane().add(button_17);
-        button_17.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                lastEntry = 8;
-                if (tempOper > 0) {
-                    if (tempNumTwo == -1) {
-                        tempNumTwo = 8;
-                        textArea.setText(tempNumTwo + "");
-                    } else {
-                        tempNumTwo = tempNumTwo * 10;
-                        tempNumTwo = tempNumTwo + 8;
-                        textArea.setText(tempNumTwo + "");
-                    }
+        btnnum9.setBounds(366, 224, 45, 23);
+        getContentPane().add(btnnum9);
+        btnnum9.addActionListener(this);
 
-                }
-                if (tempNumOne == -1) {
-                    tempNumOne = 8;
-                    textArea.setText(tempNumOne + "");
-                } else if (tempNumOne != -1 && tempOper == 0) {
-                    tempNumOne = tempNumOne * 10;
-                    tempNumOne = tempNumOne + 8;
-                    textArea.setText(tempNumOne + "");
-                }
-            }
-        });
+        btndiv.setBounds(415, 224, 45, 23);
+        getContentPane().add(btndiv);
+        btndiv.addActionListener(this);
 
-        JButton button_18 = new JButton("9");
-        button_18.setBounds(366, 224, 45, 23);
-        getContentPane().add(button_18);
-        button_18.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                lastEntry = 9;
-                if (tempOper > 0) {
-                    if (tempNumTwo == -1) {
-                        tempNumTwo = 9;
-                        textArea.setText(tempNumTwo + "");
-                    } else {
-                        tempNumTwo = tempNumTwo * 10;
-                        tempNumTwo = tempNumTwo + 9;
-                        textArea.setText(tempNumTwo + "");
-                    }
-
-                }
-                if (tempNumOne == -1) {
-                    tempNumOne = 9;
-                    textArea.setText(tempNumOne + "");
-                } else if (tempNumOne != -1 && tempOper == 0) {
-                    tempNumOne = tempNumOne * 10;
-                    tempNumOne = tempNumOne + 9;
-                    textArea.setText(tempNumOne + "");
-                }
-            }
-        });
-
-        JButton button_19 = new JButton("/");
-        button_19.setBounds(415, 224, 45, 23);
-        getContentPane().add(button_19);
-        button_19.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tempOper = 4;
-
-            }
-        });
-
-        JButton blank8 = new JButton("");
         blank8.setBounds(170, 258, 45, 23);
         getContentPane().add(blank8);
 
-        JButton blank7 = new JButton("");
         blank7.setBounds(121, 258, 45, 23);
         getContentPane().add(blank7);
 
-        JButton btnD = new JButton("D");
         btnD.setBounds(219, 258, 45, 23);
         getContentPane().add(btnD);
         btnD.addActionListener(new ActionListener() {
@@ -390,113 +279,28 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        JButton button_23 = new JButton("4");
-        button_23.setBounds(268, 258, 45, 23);
-        getContentPane().add(button_23);
-        button_23.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                lastEntry = 4;
-                if (tempOper > 0) {
-                    if (tempNumTwo == -1) {
-                        tempNumTwo = 4;
-                        textArea.setText(tempNumTwo + "");
-                    } else {
-                        tempNumTwo = tempNumTwo * 10;
-                        tempNumTwo = tempNumTwo + 4;
-                        textArea.setText(tempNumTwo + "");
-                    }
+        btnnum4.setBounds(268, 258, 45, 23);
+        getContentPane().add(btnnum4);
+        btnnum4.addActionListener(this);
 
-                }
-                if (tempNumOne == -1) {
-                    tempNumOne = 4;
-                    textArea.setText(tempNumOne + "");
-                } else if (tempNumOne != -1 && tempOper == 0) {
-                    tempNumOne = tempNumOne * 10;
-                    tempNumOne = tempNumOne + 4;
-                    textArea.setText(tempNumOne + "");
-                }
-            }
-        });
+        btnnum5.setBounds(317, 258, 45, 23);
+        getContentPane().add(btnnum5);
+        btnnum5.addActionListener(this);
 
-        JButton button_24 = new JButton("5");
-        button_24.setBounds(317, 258, 45, 23);
-        getContentPane().add(button_24);
-        button_24.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                lastEntry = 5;
-                if (tempOper > 0) {
-                    if (tempNumTwo == -1) {
-                        tempNumTwo = 5;
-                        textArea.setText(tempNumTwo + "");
-                    } else {
-                        tempNumTwo = tempNumTwo * 10;
-                        tempNumTwo = tempNumTwo + 5;
-                        textArea.setText(tempNumTwo + "");
-                    }
-
-                }
-                if (tempNumOne == -1) {
-                    tempNumOne = 5;
-                    textArea.setText(tempNumOne + "");
-                } else if (tempNumOne != -1 && tempOper == 0) {
-                    tempNumOne = tempNumOne * 10;
-                    tempNumOne = tempNumOne + 5;
-                    textArea.setText(tempNumOne + "");
-                }
-            }
-        });
-
-        JButton button_25 = new JButton("6");
         button_25.setBounds(366, 258, 45, 23);
         getContentPane().add(button_25);
-        button_25.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                lastEntry = 6;
-                if (tempOper > 0) {
-                    if (tempNumTwo == -1) {
-                        tempNumTwo = 6;
-                        textArea.setText(tempNumTwo + "");
-                    } else {
-                        tempNumTwo = tempNumTwo * 10;
-                        tempNumTwo = tempNumTwo + 6;
-                        textArea.setText(tempNumTwo + "");
-                    }
+        button_25.addActionListener(this);
 
-                }
-                if (tempNumOne == -1) {
-                    tempNumOne = 6;
-                    textArea.setText(tempNumOne + "");
-                } else if (tempNumOne != -1 && tempOper == 0) {
-                    tempNumOne = tempNumOne * 10;
-                    tempNumOne = tempNumOne + 6;
-                    textArea.setText(tempNumOne + "");
-                }
-            }
-        });
+        btnmult.setBounds(415, 258, 45, 23);
+        getContentPane().add(btnmult);
+        btnmult.addActionListener(this);
 
-        JButton button_26 = new JButton("*");
-        button_26.setBounds(415, 258, 45, 23);
-        getContentPane().add(button_26);
-        button_26.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tempOper = 3;
-
-            }
-        });
-
-        JButton blank10 = new JButton("");
         blank10.setBounds(170, 290, 45, 23);
         getContentPane().add(blank10);
 
-        JButton blank9 = new JButton("");
         blank9.setBounds(121, 290, 45, 23);
         getContentPane().add(blank9);
 
-        JButton btnE = new JButton("E");
         btnE.setBounds(219, 290, 45, 23);
         getContentPane().add(btnE);
         btnE.addActionListener(new ActionListener() {
@@ -506,113 +310,29 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        JButton button_30 = new JButton("1");
-        button_30.setBounds(268, 290, 45, 23);
-        getContentPane().add(button_30);
-        button_30.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                lastEntry = 1;
-                if (tempOper > 0) {
-                    if (tempNumTwo == -1) {
-                        tempNumTwo = 1;
-                        textArea.setText(tempNumTwo + "");
-                    } else {
-                        tempNumTwo = tempNumTwo * 10;
-                        tempNumTwo = tempNumTwo + 1;
-                        textArea.setText(tempNumTwo + "");
-                    }
+        btnsqr0.setBounds(268, 290, 45, 23);
+        getContentPane().add(btnsqr0);
+        btnsqr0.addActionListener(this);
 
-                }
-                if (tempNumOne == -1) {
-                    tempNumOne = 1;
-                    textArea.setText(tempNumOne + "");
-                } else if (tempNumOne != -1 && tempOper == 0) {
-                    tempNumOne = tempNumOne * 10;
-                    tempNumOne = tempNumOne + 1;
-                    textArea.setText(tempNumOne + "");
-                }
-            }
-        });
+        btnsqr1.setBounds(317, 290, 45, 23);
+        getContentPane().add(btnsqr1);
+        btnsqr1.addActionListener(this);
 
-        JButton button_31 = new JButton("2");
-        button_31.setBounds(317, 290, 45, 23);
-        getContentPane().add(button_31);
-        button_31.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                lastEntry = 2;
-                if (tempOper > 0) {
-                    if (tempNumTwo == -1) {
-                        tempNumTwo = 2;
-                        textArea.setText(tempNumTwo + "");
-                    } else {
-                        tempNumTwo = tempNumTwo * 10;
-                        tempNumTwo = tempNumTwo + 2;
-                        textArea.setText(tempNumTwo + "");
-                    }
+        btnsqr2.setBounds(366, 290, 45, 23);
+        getContentPane().add(btnsqr2);
+        btnsqr2.addActionListener(this);
 
-                }
-                if (tempNumOne == -1) {
-                    tempNumOne = 2;
-                    textArea.setText(tempNumOne + "");
-                } else if (tempNumOne != -1 && tempOper == 0) {
-                    tempNumOne = tempNumOne * 10;
-                    tempNumOne = tempNumOne + 2;
-                    textArea.setText(tempNumOne + "");
-                }
-            }
-        });
+        btnsqr3.setBounds(415, 290, 45, 23);
+        getContentPane().add(btnsqr3);
+        btnsqr3.addActionListener(this);
 
-        JButton button_32 = new JButton("3");
-        button_32.setBounds(366, 290, 45, 23);
-        getContentPane().add(button_32);
-        button_32.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                lastEntry = 3;
-                if (tempOper > 0) {
-                    if (tempNumTwo == -1) {
-                        tempNumTwo = 3;
-                        textArea.setText(tempNumTwo + "");
-                    } else {
-                        tempNumTwo = tempNumTwo * 10;
-                        tempNumTwo = tempNumTwo + 3;
-                        textArea.setText(tempNumTwo + "");
-                    }
 
-                }
-                if (tempNumOne == -1) {
-                    tempNumOne = 3;
-                    textArea.setText(tempNumOne + "");
-                } else if (tempNumOne != -1 && tempOper == 0) {
-                    tempNumOne = tempNumOne * 10;
-                    tempNumOne = tempNumOne + 3;
-                    textArea.setText(tempNumOne + "");
-                }
-            }
-        });
-
-        JButton button_33 = new JButton("-");
-        button_33.setBounds(415, 290, 45, 23);
-        getContentPane().add(button_33);
-        button_33.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tempOper = 2;
-
-            }
-        });
-
-        JButton blank12 = new JButton("");
         blank12.setBounds(170, 323, 45, 23);
         getContentPane().add(blank12);
 
-        JButton blank11 = new JButton("");
         blank11.setBounds(121, 323, 45, 23);
         getContentPane().add(blank11);
 
-        JButton btnF = new JButton("F");
         btnF.setBounds(219, 323, 45, 23);
         getContentPane().add(btnF);
         btnF.addActionListener(new ActionListener() {
@@ -622,117 +342,402 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        JButton button_37 = new JButton("0");
-        button_37.setBounds(268, 323, 94, 23);
-        getContentPane().add(button_37);
-        button_37.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (tempOper > 0) {
-                    if (tempNumTwo == -1) {
-                        tempNumTwo = 0;
-                        textArea.setText(tempNumTwo + "");
-                    } else {
-                        tempNumTwo = tempNumTwo * 10;
-                        tempNumTwo = tempNumTwo + 0;
-                        textArea.setText(tempNumTwo + "");
-                    }
+        btnsqr7.setBounds(268, 323, 94, 23);
+        getContentPane().add(btnsqr7);
+        btnsqr7.addActionListener(this);
 
-                }
-                if (tempNumOne == -1) {
-                    tempNumOne = 1;
-                    textArea.setText(tempNumOne + "");
-                } else if (tempNumOne != -1 && tempOper == 0) {
-                    tempNumOne = tempNumOne * 10;
-                    tempNumOne = tempNumOne + 0;
-                    textArea.setText(tempNumOne + "");
-                }
-            }
-        });
+        btnsqr9.setBounds(366, 323, 45, 23);
+        getContentPane().add(btnsqr9);
 
-        JButton button_39 = new JButton(".");
-        button_39.setBounds(366, 323, 45, 23);
-        getContentPane().add(button_39);
+        btnplus.setBounds(415, 323, 45, 23);
+        getContentPane().add(btnplus);
+        btnplus.addActionListener(this);
 
-
-        JButton button_40 = new JButton("+");
-        button_40.setBounds(415, 323, 45, 23);
-        getContentPane().add(button_40);
-        button_40.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tempOper = 1;
-
-            }
-        });
-
-        JButton btnM_1 = new JButton("m");
         btnM_1.setBounds(465, 157, 45, 23);
         getContentPane().add(btnM_1);
-        btnM_1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
-        });
+        btnsqr.setBounds(465, 190, 45, 23);
+        getContentPane().add(btnsqr);
 
-        JButton button_3 = new JButton("\u221A");
-        button_3.setBounds(465, 190, 45, 23);
-        getContentPane().add(button_3);
+        btnmod.setBounds(465, 224, 45, 23);
+        getContentPane().add(btnmod);
 
-        JButton button_4 = new JButton("%");
-        button_4.setBounds(465, 224, 45, 23);
-        getContentPane().add(button_4);
-
-        JButton btnEqual = new JButton("=");
-        btnEqual.setBounds(465, 290, 45, 56);
-        getContentPane().add(btnEqual);
-        btnEqual.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switch (tempOper) {
-                    case 1:
-                        tempEqual = tempNumOne + tempNumTwo;
-                        textArea.setText(tempEqual + "");
-                        tempNumOne = -1;
-                        tempNumTwo = -1;
-                        tempEqual = -1;
-                        tempOper = 0;
-                        break;
-                    case 2:
-                        tempEqual = tempNumOne - tempNumTwo;
-                        textArea.setText(tempEqual + "");
-                        tempNumOne = -1;
-                        tempNumTwo = -1;
-                        tempEqual = -1;
-                        tempOper = 0;
-                        break;
-                    case 3:
-                        tempEqual = tempNumOne * tempNumTwo;
-                        textArea.setText(tempEqual + "");
-                        tempNumOne = -1;
-                        tempNumTwo = -1;
-                        tempEqual = -1;
-                        tempOper = 0;
-                        break;
-                    case 4:
-                        tempEqual = tempNumOne / tempNumTwo;
-                        textArea.setText(tempEqual + "");
-                        tempNumOne = -1;
-                        tempNumTwo = -1;
-                        tempEqual = -1;
-                        tempOper = 0;
-                        break;
-                }
-
-            }
-        });
-
-        JButton btnI = new JButton("I");
         btnI.setBounds(465, 258, 45, 23);
         getContentPane().add(btnI);
+        btnI.addActionListener(this);
+
+        btnEqual.setBounds(465, 290, 45, 56);
+        getContentPane().add(btnEqual);
+        btnEqual.addActionListener(this);
+
+        JButton btnempty = new JButton("");
+        btnempty.setBounds(465, 260, 45, 23);
+        getContentPane().add(btnempty);
+
     }
 
     public void actionPerformed(ActionEvent e) {
+
+        if (e.getSource() == btnEqual) {
+            switch (tempOper[0]) {
+                case 1:
+                    tempEqual[0] = tempNumOne[0] + tempNumTwo[0];
+                    textArea.setText(tempEqual[0] + "");
+                    tempNumOne[0] = -1;
+                    tempNumTwo[0] = -1;
+                    tempEqual[0] = -1;
+                    tempOper[0] = 0;
+                    break;
+                case 2:
+                    tempEqual[0] = tempNumOne[0] - tempNumTwo[0];
+                    textArea.setText(tempEqual[0] + "");
+                    tempNumOne[0] = -1;
+                    tempNumTwo[0] = -1;
+                    tempEqual[0] = -1;
+                    tempOper[0] = 0;
+                    break;
+                case 3:
+                    tempEqual[0] = tempNumOne[0] * tempNumTwo[0];
+                    textArea.setText(tempEqual[0] + "");
+                    tempNumOne[0] = -1;
+                    tempNumTwo[0] = -1;
+                    tempEqual[0] = -1;
+                    tempOper[0] = 0;
+                    break;
+                case 4:
+                    tempEqual[0] = tempNumOne[0] / tempNumTwo[0];
+                    textArea.setText(tempEqual[0] + "");
+                    tempNumOne[0] = -1;
+                    tempNumTwo[0] = -1;
+                    tempEqual[0] = -1;
+                    tempOper[0] = 0;
+                    break;
+            }
+        }
+
+        if (e.getSource() == btnplus) {
+            tempOper[0] = 1;
+        }
+
+        if (e.getSource() == btnsqr7) {
+            if (tempOper[0] > 0) {
+                if (tempNumTwo[0] == -1) {
+                    tempNumTwo[0] = 0;
+                    textArea.setText(tempNumTwo[0] + "");
+                } else {
+                    tempNumTwo[0] = tempNumTwo[0] * 10;
+                    tempNumTwo[0] = tempNumTwo[0] + 0;
+                    textArea.setText(tempNumTwo[0] + "");
+                }
+
+            }
+            if (tempNumOne[0] == -1) {
+                tempNumOne[0] = 1;
+                textArea.setText(tempNumOne[0] + "");
+            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                tempNumOne[0] = tempNumOne[0] * 10;
+                tempNumOne[0] = tempNumOne[0] + 0;
+                textArea.setText(tempNumOne[0] + "");
+            }
+        }
+
+        if (e.getSource() == btnsqr3) {
+            tempOper[0] = 2;
+        }
+
+        if (e.getSource() == btnsqr2) {
+            lastEntry[0] = 3;
+            if (tempOper[0] > 0) {
+                if (tempNumTwo[0] == -1) {
+                    tempNumTwo[0] = 3;
+                    textArea.setText(tempNumTwo[0] + "");
+                } else {
+                    tempNumTwo[0] = tempNumTwo[0] * 10;
+                    tempNumTwo[0] = tempNumTwo[0] + 3;
+                    textArea.setText(tempNumTwo[0] + "");
+                }
+
+            }
+            if (tempNumOne[0] == -1) {
+                tempNumOne[0] = 3;
+                textArea.setText(tempNumOne[0] + "");
+            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                tempNumOne[0] = tempNumOne[0] * 10;
+                tempNumOne[0] = tempNumOne[0] + 3;
+                textArea.setText(tempNumOne[0] + "");
+            }
+        }
+
+        if (e.getSource() == btnmult) {
+            tempOper[0] = 3;
+        }
+
+        if (e.getSource() == btnsqr1) {
+            lastEntry[0] = 2;
+            if (tempOper[0] > 0) {
+                if (tempNumTwo[0] == -1) {
+                    tempNumTwo[0] = 2;
+                    textArea.setText(tempNumTwo[0] + "");
+                } else {
+                    tempNumTwo[0] = tempNumTwo[0] * 10;
+                    tempNumTwo[0] = tempNumTwo[0] + 2;
+                    textArea.setText(tempNumTwo[0] + "");
+                }
+
+            }
+            if (tempNumOne[0] == -1) {
+                tempNumOne[0] = 2;
+                textArea.setText(tempNumOne[0] + "");
+            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                tempNumOne[0] = tempNumOne[0] * 10;
+                tempNumOne[0] = tempNumOne[0] + 2;
+                textArea.setText(tempNumOne[0] + "");
+            }
+        }
+
+        if (e.getSource() == btnsqr0) {
+            lastEntry[0] = 1;
+            if (tempOper[0] > 0) {
+                if (tempNumTwo[0] == -1) {
+                    tempNumTwo[0] = 1;
+                    textArea.setText(tempNumTwo[0] + "");
+                } else {
+                    tempNumTwo[0] = tempNumTwo[0] * 10;
+                    tempNumTwo[0] = tempNumTwo[0] + 1;
+                    textArea.setText(tempNumTwo[0] + "");
+                }
+
+            }
+            if (tempNumOne[0] == -1) {
+                tempNumOne[0] = 1;
+                textArea.setText(tempNumOne[0] + "");
+            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                tempNumOne[0] = tempNumOne[0] * 10;
+                tempNumOne[0] = tempNumOne[0] + 1;
+                textArea.setText(tempNumOne[0] + "");
+            }
+        }
+
+        if (e.getSource() == button_25) {
+            lastEntry[0] = 6;
+            if (tempOper[0] > 0) {
+                if (tempNumTwo[0] == -1) {
+                    tempNumTwo[0] = 6;
+                    textArea.setText(tempNumTwo[0] + "");
+                } else {
+                    tempNumTwo[0] = tempNumTwo[0] * 10;
+                    tempNumTwo[0] = tempNumTwo[0] + 6;
+                    textArea.setText(tempNumTwo[0] + "");
+                }
+
+            }
+            if (tempNumOne[0] == -1) {
+                tempNumOne[0] = 6;
+                textArea.setText(tempNumOne[0] + "");
+            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                tempNumOne[0] = tempNumOne[0] * 10;
+                tempNumOne[0] = tempNumOne[0] + 6;
+                textArea.setText(tempNumOne[0] + "");
+            }
+        }
+
+        if (e.getSource() == btnnum5) {
+            lastEntry[0] = 5;
+            if (tempOper[0] > 0) {
+                if (tempNumTwo[0] == -1) {
+                    tempNumTwo[0] = 5;
+                    textArea.setText(tempNumTwo[0] + "");
+                } else {
+                    tempNumTwo[0] = tempNumTwo[0] * 10;
+                    tempNumTwo[0] = tempNumTwo[0] + 5;
+                    textArea.setText(tempNumTwo[0] + "");
+                }
+
+            }
+            if (tempNumOne[0] == -1) {
+                tempNumOne[0] = 5;
+                textArea.setText(tempNumOne[0] + "");
+            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                tempNumOne[0] = tempNumOne[0] * 10;
+                tempNumOne[0] = tempNumOne[0] + 5;
+                textArea.setText(tempNumOne[0] + "");
+            }
+        }
+
+        if (e.getSource() == btnnum4) {
+            lastEntry[0] = 4;
+            if (tempOper[0] > 0) {
+                if (tempNumTwo[0] == -1) {
+                    tempNumTwo[0] = 4;
+                    textArea.setText(tempNumTwo[0] + "");
+                } else {
+                    tempNumTwo[0] = tempNumTwo[0] * 10;
+                    tempNumTwo[0] = tempNumTwo[0] + 4;
+                    textArea.setText(tempNumTwo[0] + "");
+                }
+
+            }
+            if (tempNumOne[0] == -1) {
+                tempNumOne[0] = 4;
+                textArea.setText(tempNumOne[0] + "");
+            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                tempNumOne[0] = tempNumOne[0] * 10;
+                tempNumOne[0] = tempNumOne[0] + 4;
+                textArea.setText(tempNumOne[0] + "");
+            }
+        }
+
+        if (e.getSource() == btndiv) {
+            tempOper[0] = 4;
+        }
+
+        if (e.getSource() == btnnum9) {
+            lastEntry[0] = 9;
+            if (tempOper[0] > 0) {
+                if (tempNumTwo[0] == -1) {
+                    tempNumTwo[0] = 9;
+                    textArea.setText(tempNumTwo[0] + "");
+                } else {
+                    tempNumTwo[0] = tempNumTwo[0] * 10;
+                    tempNumTwo[0] = tempNumTwo[0] + 9;
+                    textArea.setText(tempNumTwo[0] + "");
+                }
+
+            }
+            if (tempNumOne[0] == -1) {
+                tempNumOne[0] = 9;
+                textArea.setText(tempNumOne[0] + "");
+            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                tempNumOne[0] = tempNumOne[0] * 10;
+                tempNumOne[0] = tempNumOne[0] + 9;
+                textArea.setText(tempNumOne[0] + "");
+            }
+        }
+
+        if (e.getSource() == btnnum8) {
+            lastEntry[0] = 8;
+            if (tempOper[0] > 0) {
+                if (tempNumTwo[0] == -1) {
+                    tempNumTwo[0] = 8;
+                    textArea.setText(tempNumTwo[0] + "");
+                } else {
+                    tempNumTwo[0] = tempNumTwo[0] * 10;
+                    tempNumTwo[0] = tempNumTwo[0] + 8;
+                    textArea.setText(tempNumTwo[0] + "");
+                }
+
+            }
+            if (tempNumOne[0] == -1) {
+                tempNumOne[0] = 8;
+                textArea.setText(tempNumOne[0] + "");
+            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                tempNumOne[0] = tempNumOne[0] * 10;
+                tempNumOne[0] = tempNumOne[0] + 8;
+                textArea.setText(tempNumOne[0] + "");
+            }
+        }
+
+        if (e.getSource() == btnnum7) {
+            lastEntry[0] = 7;
+            if (tempOper[0] > 0) {
+                if (tempNumTwo[0] == -1) {
+                    tempNumTwo[0] = 7;
+                    textArea.setText(tempNumTwo[0] + "");
+                } else {
+                    tempNumTwo[0] = tempNumTwo[0] * 10;
+                    tempNumTwo[0] = tempNumTwo[0] + 7;
+                    textArea.setText(tempNumTwo[0] + "");
+                }
+
+            }
+            if (tempNumOne[0] == -1) {
+                tempNumOne[0] = 7;
+                textArea.setText(tempNumOne[0] + "");
+            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                tempNumOne[0] = tempNumOne[0] * 10;
+                tempNumOne[0] = tempNumOne[0] + 7;
+                textArea.setText(tempNumOne[0] + "");
+            }
+        }
+
+        if (e.getSource() == btnC) {
+            textArea.setText(0 + "");
+            tempNumOne[0] = -1;
+            tempNumTwo[0] = -1;
+            tempEqual[0] = -1;
+            tempOper[0] = 0;
+        }
+
+        if (e.getSource() == btnCe) {
+            if (lastEntry[0] != -1) {
+                if (tempOper[0] == 0) {
+                    tempNumOne[0] = -1;
+                    textArea.setText(0 + "");
+                } else {
+                    tempNumTwo[0] = -1;
+                    textArea.setText(0 + "");
+                }
+            }
+        }
+
+        if (e.getSource() == rdbtnHex) {
+            currentSetting[0] = 1;
+            rdbtnHex.setSelected(true);
+            rdbtnDec.setSelected(false);
+            rdbtnOct.setSelected(false);
+            rdbtnBin.setSelected(false);
+        }
+
+        if (e.getSource() == rdbtnDec) {
+            currentSetting[0] = 2;
+            rdbtnHex.setSelected(false);
+            rdbtnDec.setSelected(true);
+            rdbtnOct.setSelected(false);
+            rdbtnBin.setSelected(false);
+        }
+
+        if (e.getSource() == rdbtnOct) {
+            currentSetting[0] = 3;
+            rdbtnHex.setSelected(false);
+            rdbtnDec.setSelected(false);
+            rdbtnOct.setSelected(true);
+            rdbtnBin.setSelected(false);
+        }
+
+        if (e.getSource() == rdbtnBin) {
+            currentSetting[0] = 4;
+            rdbtnHex.setSelected(false);
+            rdbtnDec.setSelected(false);
+            rdbtnOct.setSelected(false);
+            rdbtnBin.setSelected(true);
+        }
+
+        if (e.getSource() == btnbs) {
+            if (tempOper[0] == 0 && tempNumOne[0] != -1) {
+                if (tempNumOne[0] >=10 ) {
+                    tempNumOne[0] = tempNumOne[0] - lastEntry[0];
+                    tempNumOne[0] = tempNumOne[0] / 10;
+                    textArea.setText(tempNumOne + "");
+                }
+                else {
+                    tempNumOne[0] = 0;
+                    textArea.setText(tempNumOne + "");
+                }
+            }
+            else if(tempOper[0] != 0 && tempNumTwo[0] != -1) {
+                if (tempNumTwo[0] >=10  && tempOper[0] != 0) {
+                    tempNumTwo[0] = tempNumTwo[0] - lastEntry[0];
+                    tempNumTwo[0] = tempNumTwo[0] / 10;
+                    textArea.setText(tempNumTwo + "");
+                }
+                else {
+                    tempNumTwo[0] = 0;
+                    textArea.setText(tempNumTwo + "");
+                }
+            }
+        }
+
+
     }
+
 }
