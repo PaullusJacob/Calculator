@@ -53,22 +53,22 @@ public class Calculator extends JFrame implements ActionListener {
     JButton btnnum4 = new JButton("4");
     JButton btnnum5 = new JButton("5");
     JButton btnmult = new JButton("*");
-    JButton button_25 = new JButton("6");
+    JButton btnnum6 = new JButton("6");
     JButton btnEqual = new JButton("=");
     JButton btnI = new JButton("I");
     JButton btnsqr = new JButton("\u221A");
     JButton btnM_1 = new JButton("");
     JButton btnplus = new JButton("+");
-    JButton btnsqr9 = new JButton(".");
-    JButton btnsqr7 = new JButton("0");
+    JButton btndec = new JButton(".");
+    JButton btnnum0 = new JButton("0");
     JButton blank12 = new JButton("");
     JButton btnmod = new JButton("%");
     JButton btnF = new JButton("F");
     JButton blank11 = new JButton("");
-    JButton btnsqr3 = new JButton("-");
-    JButton btnsqr2 = new JButton("3");
-    JButton btnsqr1 = new JButton("2");
-    JButton btnsqr0 = new JButton("1");
+    JButton btnminus = new JButton("-");
+    JButton btnnum3 = new JButton("3");
+    JButton btnnum2 = new JButton("2");
+    JButton btnnum1 = new JButton("1");
     JButton btnE = new JButton("E");
     JButton blank9 = new JButton("");
     JButton blank10 = new JButton("");
@@ -209,12 +209,7 @@ public class Calculator extends JFrame implements ActionListener {
 
         btnbs.setBounds(268, 190, 45, 23);
         getContentPane().add(btnbs);
-        btnbs.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        btnbs.addActionListener(this);
 
         btnCe.setBounds(317, 190, 45, 23);
         getContentPane().add(btnCe);
@@ -226,12 +221,7 @@ public class Calculator extends JFrame implements ActionListener {
 
         btnpm.setBounds(415, 190, 45, 23);
         getContentPane().add(btnpm);
-        btnpm.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        btnpm.addActionListener(this);
 
         blank6.setBounds(170, 224, 45, 23);
         getContentPane().add(blank6);
@@ -287,9 +277,9 @@ public class Calculator extends JFrame implements ActionListener {
         getContentPane().add(btnnum5);
         btnnum5.addActionListener(this);
 
-        button_25.setBounds(366, 258, 45, 23);
-        getContentPane().add(button_25);
-        button_25.addActionListener(this);
+        btnnum6.setBounds(366, 258, 45, 23);
+        getContentPane().add(btnnum6);
+        btnnum6.addActionListener(this);
 
         btnmult.setBounds(415, 258, 45, 23);
         getContentPane().add(btnmult);
@@ -310,21 +300,21 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        btnsqr0.setBounds(268, 290, 45, 23);
-        getContentPane().add(btnsqr0);
-        btnsqr0.addActionListener(this);
+        btnnum1.setBounds(268, 290, 45, 23);
+        getContentPane().add(btnnum1);
+        btnnum1.addActionListener(this);
 
-        btnsqr1.setBounds(317, 290, 45, 23);
-        getContentPane().add(btnsqr1);
-        btnsqr1.addActionListener(this);
+        btnnum2.setBounds(317, 290, 45, 23);
+        getContentPane().add(btnnum2);
+        btnnum2.addActionListener(this);
 
-        btnsqr2.setBounds(366, 290, 45, 23);
-        getContentPane().add(btnsqr2);
-        btnsqr2.addActionListener(this);
+        btnnum3.setBounds(366, 290, 45, 23);
+        getContentPane().add(btnnum3);
+        btnnum3.addActionListener(this);
 
-        btnsqr3.setBounds(415, 290, 45, 23);
-        getContentPane().add(btnsqr3);
-        btnsqr3.addActionListener(this);
+        btnminus.setBounds(415, 290, 45, 23);
+        getContentPane().add(btnminus);
+        btnminus.addActionListener(this);
 
 
         blank12.setBounds(170, 323, 45, 23);
@@ -342,12 +332,12 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        btnsqr7.setBounds(268, 323, 94, 23);
-        getContentPane().add(btnsqr7);
-        btnsqr7.addActionListener(this);
+        btnnum0.setBounds(268, 323, 94, 23);
+        getContentPane().add(btnnum0);
+        btnnum0.addActionListener(this);
 
-        btnsqr9.setBounds(366, 323, 45, 23);
-        getContentPane().add(btnsqr9);
+        btndec.setBounds(366, 323, 45, 23);
+        getContentPane().add(btndec);
 
         btnplus.setBounds(415, 323, 45, 23);
         getContentPane().add(btnplus);
@@ -385,7 +375,6 @@ public class Calculator extends JFrame implements ActionListener {
                     textArea.setText(tempEqual[0] + "");
                     tempNumOne[0] = -1;
                     tempNumTwo[0] = -1;
-                    tempEqual[0] = -1;
                     tempOper[0] = 0;
                     break;
                 case 2:
@@ -393,7 +382,6 @@ public class Calculator extends JFrame implements ActionListener {
                     textArea.setText(tempEqual[0] + "");
                     tempNumOne[0] = -1;
                     tempNumTwo[0] = -1;
-                    tempEqual[0] = -1;
                     tempOper[0] = 0;
                     break;
                 case 3:
@@ -401,7 +389,6 @@ public class Calculator extends JFrame implements ActionListener {
                     textArea.setText(tempEqual[0] + "");
                     tempNumOne[0] = -1;
                     tempNumTwo[0] = -1;
-                    tempEqual[0] = -1;
                     tempOper[0] = 0;
                     break;
                 case 4:
@@ -409,7 +396,6 @@ public class Calculator extends JFrame implements ActionListener {
                     textArea.setText(tempEqual[0] + "");
                     tempNumOne[0] = -1;
                     tempNumTwo[0] = -1;
-                    tempEqual[0] = -1;
                     tempOper[0] = 0;
                     break;
             }
@@ -419,7 +405,7 @@ public class Calculator extends JFrame implements ActionListener {
             tempOper[0] = 1;
         }
 
-        if (e.getSource() == btnsqr7) {
+        if (e.getSource() == btnnum0) {
             if (tempOper[0] > 0) {
                 if (tempNumTwo[0] == -1) {
                     tempNumTwo[0] = 0;
@@ -441,12 +427,13 @@ public class Calculator extends JFrame implements ActionListener {
             }
         }
 
-        if (e.getSource() == btnsqr3) {
+        if (e.getSource() == btnminus) {
             tempOper[0] = 2;
         }
 
-        if (e.getSource() == btnsqr2) {
+        if (e.getSource() == btnnum3) {
             lastEntry[0] = 3;
+            tempEqual[0] = -1;
             if (tempOper[0] > 0) {
                 if (tempNumTwo[0] == -1) {
                     tempNumTwo[0] = 3;
@@ -472,8 +459,9 @@ public class Calculator extends JFrame implements ActionListener {
             tempOper[0] = 3;
         }
 
-        if (e.getSource() == btnsqr1) {
+        if (e.getSource() == btnnum2) {
             lastEntry[0] = 2;
+            tempEqual[0] = -1;
             if (tempOper[0] > 0) {
                 if (tempNumTwo[0] == -1) {
                     tempNumTwo[0] = 2;
@@ -495,8 +483,9 @@ public class Calculator extends JFrame implements ActionListener {
             }
         }
 
-        if (e.getSource() == btnsqr0) {
+        if (e.getSource() == btnnum1) {
             lastEntry[0] = 1;
+            tempEqual[0] = -1;
             if (tempOper[0] > 0) {
                 if (tempNumTwo[0] == -1) {
                     tempNumTwo[0] = 1;
@@ -518,8 +507,9 @@ public class Calculator extends JFrame implements ActionListener {
             }
         }
 
-        if (e.getSource() == button_25) {
+        if (e.getSource() == btnnum6) {
             lastEntry[0] = 6;
+            tempEqual[0] = -1;
             if (tempOper[0] > 0) {
                 if (tempNumTwo[0] == -1) {
                     tempNumTwo[0] = 6;
@@ -543,6 +533,7 @@ public class Calculator extends JFrame implements ActionListener {
 
         if (e.getSource() == btnnum5) {
             lastEntry[0] = 5;
+            tempEqual[0] = -1;
             if (tempOper[0] > 0) {
                 if (tempNumTwo[0] == -1) {
                     tempNumTwo[0] = 5;
@@ -566,6 +557,7 @@ public class Calculator extends JFrame implements ActionListener {
 
         if (e.getSource() == btnnum4) {
             lastEntry[0] = 4;
+            tempEqual[0] = -1;
             if (tempOper[0] > 0) {
                 if (tempNumTwo[0] == -1) {
                     tempNumTwo[0] = 4;
@@ -593,6 +585,7 @@ public class Calculator extends JFrame implements ActionListener {
 
         if (e.getSource() == btnnum9) {
             lastEntry[0] = 9;
+            tempEqual[0] = -1;
             if (tempOper[0] > 0) {
                 if (tempNumTwo[0] == -1) {
                     tempNumTwo[0] = 9;
@@ -616,6 +609,7 @@ public class Calculator extends JFrame implements ActionListener {
 
         if (e.getSource() == btnnum8) {
             lastEntry[0] = 8;
+            tempEqual[0] = -1;
             if (tempOper[0] > 0) {
                 if (tempNumTwo[0] == -1) {
                     tempNumTwo[0] = 8;
@@ -639,6 +633,7 @@ public class Calculator extends JFrame implements ActionListener {
 
         if (e.getSource() == btnnum7) {
             lastEntry[0] = 7;
+            tempEqual[0] = -1;
             if (tempOper[0] > 0) {
                 if (tempNumTwo[0] == -1) {
                     tempNumTwo[0] = 7;
@@ -717,27 +712,42 @@ public class Calculator extends JFrame implements ActionListener {
                 if (tempNumOne[0] >=10 ) {
                     tempNumOne[0] = tempNumOne[0] - lastEntry[0];
                     tempNumOne[0] = tempNumOne[0] / 10;
-                    textArea.setText(tempNumOne + "");
+                    textArea.setText(tempNumOne[0] + "");
                 }
                 else {
                     tempNumOne[0] = 0;
-                    textArea.setText(tempNumOne + "");
+                    textArea.setText(tempNumOne[0] + "");
                 }
             }
             else if(tempOper[0] != 0 && tempNumTwo[0] != -1) {
                 if (tempNumTwo[0] >=10  && tempOper[0] != 0) {
                     tempNumTwo[0] = tempNumTwo[0] - lastEntry[0];
                     tempNumTwo[0] = tempNumTwo[0] / 10;
-                    textArea.setText(tempNumTwo + "");
+                    textArea.setText(tempNumTwo[0] + "");
                 }
                 else {
                     tempNumTwo[0] = 0;
-                    textArea.setText(tempNumTwo + "");
+                    textArea.setText(tempNumTwo[0] + "");
                 }
             }
         }
 
+        if (e.getSource() == btnpm) {
+            if (tempOper[0] == 0 && tempNumOne[0] != -1) {
+                tempNumOne[0] = tempNumOne[0] * -1;
+                textArea.setText(tempNumOne[0] + "");
+            }
+            else if (tempNumTwo[0] != -1 && tempEqual[0] == -1) {
+                tempNumTwo[0] = tempNumTwo[0] * -1;
+                textArea.setText(tempNumTwo[0] + "");
+            }
+            else {
+                tempEqual[0] = tempEqual[0] * -1;
+                textArea.setText(tempEqual[0] + "");
+            }
 
+        }
+
+        
     }
-
 }
