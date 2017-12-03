@@ -3,15 +3,34 @@
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.lang.StringBuilder;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Calculator extends JFrame implements ActionListener {
 
+
+    dectohex convert = new dectohex();
+
+    private static final int sizeOfIntInHalfBytes = 8;
+    private static final int numberOfBitsInAHalfByte = 4;
+    private static final int halfByte = 0x0F;
+    private static final char[] hexDigits = {
+            '0', '1', '2', '3', '4', '5', '6', '7',
+            '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+    };
     int tempOper[] = {0};
-    long tempNumOne[] = {-1};
-    long tempNumTwo[] = {-1};
-    long tempEqual[] = {-1};
+    int tempNumOne[] = {-1};
+    int tempNumTwo[] = {-1};
+    int tempEqual[] = {-1};
     int lastEntry[] = {-1};
     int currentSetting[] = {2};
+    int previousSetting[] = {2};
+    String numOneHex[] = {""};
+    String numTwoHex[] = {""};
+    List<String> oneArray = new ArrayList<String>();
+    List<String> twoArray = new ArrayList<String>();
+
 
     JToolBar toolBar = new JToolBar();
     JButton btnView = new JButton("View");
@@ -75,7 +94,7 @@ public class Calculator extends JFrame implements ActionListener {
 
 
     public Calculator() {
-        toolBar.setBounds(0, 0, 120, 16);
+        toolBar.setBounds(0, 0, 127, 22);
         getContentPane().add(toolBar);
 
         toolBar.add(btnView);
@@ -165,203 +184,173 @@ public class Calculator extends JFrame implements ActionListener {
             }
         });
 
-        blank2.setBounds(170, 157, 45, 23);
+        blank2.setBounds(170, 157, 47, 23);
         getContentPane().add(blank2);
 
-        blank1.setBounds(121, 157, 45, 23);
+        blank1.setBounds(121, 157, 47, 23);
         getContentPane().add(blank1);
 
-        btnA.setBounds(219, 157, 45, 23);
+        btnA.setBounds(219, 157, 47, 23);
         getContentPane().add(btnA);
-        btnA.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        btnA.addActionListener(this);
 
-            }
-        });
-
-        btnMc.setBounds(268, 157, 45, 23);
+        btnMc.setBounds(268, 157, 47, 23);
         getContentPane().add(btnMc);
 
-        btnMr.setBounds(317, 157, 45, 23);
+        btnMr.setBounds(317, 157, 47, 23);
         getContentPane().add(btnMr);
 
-        btnMs.setBounds(366, 157, 45, 23);
+        btnMs.setBounds(366, 157, 47, 23);
         getContentPane().add(btnMs);
 
-        btnM.setBounds(415, 157, 45, 23);
+        btnM.setBounds(415, 157, 47, 23);
         getContentPane().add(btnM);
 
-        blank4.setBounds(170, 190, 45, 23);
+        blank4.setBounds(170, 190, 47, 23);
         getContentPane().add(blank4);
 
-        blank3.setBounds(121, 190, 45, 23);
+        blank3.setBounds(121, 190, 47, 23);
         getContentPane().add(blank3);
 
-        btnB.setBounds(219, 190, 45, 23);
+        btnB.setBounds(219, 190, 47, 23);
         getContentPane().add(btnB);
-        btnB.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        btnB.addActionListener(this);
 
-            }
-        });
-
-        btnbs.setBounds(268, 190, 45, 23);
+        btnbs.setBounds(268, 190, 47, 23);
         getContentPane().add(btnbs);
         btnbs.addActionListener(this);
 
-        btnCe.setBounds(317, 190, 45, 23);
+        btnCe.setBounds(317, 190, 48, 23);
         getContentPane().add(btnCe);
         btnCe.addActionListener(this);
 
-        btnC.setBounds(366, 190, 45, 23);
+        btnC.setBounds(366, 190, 47, 23);
         getContentPane().add(btnC);
         btnC.addActionListener(this);
 
-        btnpm.setBounds(415, 190, 45, 23);
+        btnpm.setBounds(415, 190, 47, 23);
         getContentPane().add(btnpm);
         btnpm.addActionListener(this);
 
-        blank6.setBounds(170, 224, 45, 23);
+        blank6.setBounds(170, 224, 47, 23);
         getContentPane().add(blank6);
 
-        blank5.setBounds(121, 224, 45, 23);
+        blank5.setBounds(121, 224, 47, 23);
         getContentPane().add(blank5);
 
-        btnC_1.setBounds(219, 224, 45, 23);
+        btnC_1.setBounds(219, 224, 47, 23);
         getContentPane().add(btnC_1);
-        btnC_1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        btnC_1.addActionListener(this);
 
-            }
-        });
-
-        btnnum7.setBounds(268, 224, 45, 23);
+        btnnum7.setBounds(268, 224, 47, 23);
         getContentPane().add(btnnum7);
         btnnum7.addActionListener(this);
 
-        btnnum8.setBounds(317, 224, 45, 23);
+        btnnum8.setBounds(317, 224, 47, 23);
         getContentPane().add(btnnum8);
         btnnum8.addActionListener(this);
 
-        btnnum9.setBounds(366, 224, 45, 23);
+        btnnum9.setBounds(366, 224, 47, 23);
         getContentPane().add(btnnum9);
         btnnum9.addActionListener(this);
 
-        btndiv.setBounds(415, 224, 45, 23);
+        btndiv.setBounds(415, 224, 47, 23);
         getContentPane().add(btndiv);
         btndiv.addActionListener(this);
 
-        blank8.setBounds(170, 258, 45, 23);
+        blank8.setBounds(170, 258, 47, 23);
         getContentPane().add(blank8);
 
-        blank7.setBounds(121, 258, 45, 23);
+        blank7.setBounds(121, 258, 47, 23);
         getContentPane().add(blank7);
 
-        btnD.setBounds(219, 258, 45, 23);
+        btnD.setBounds(219, 258, 47, 23);
         getContentPane().add(btnD);
-        btnD.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        btnD.addActionListener(this);
 
-            }
-        });
-
-        btnnum4.setBounds(268, 258, 45, 23);
+        btnnum4.setBounds(268, 258, 47, 23);
         getContentPane().add(btnnum4);
         btnnum4.addActionListener(this);
 
-        btnnum5.setBounds(317, 258, 45, 23);
+        btnnum5.setBounds(317, 258, 47, 23);
         getContentPane().add(btnnum5);
         btnnum5.addActionListener(this);
 
-        btnnum6.setBounds(366, 258, 45, 23);
+        btnnum6.setBounds(366, 258, 47, 23);
         getContentPane().add(btnnum6);
         btnnum6.addActionListener(this);
 
-        btnmult.setBounds(415, 258, 45, 23);
+        btnmult.setBounds(415, 258, 47, 23);
         getContentPane().add(btnmult);
         btnmult.addActionListener(this);
 
-        blank10.setBounds(170, 290, 45, 23);
+        blank10.setBounds(170, 290, 47, 23);
         getContentPane().add(blank10);
 
-        blank9.setBounds(121, 290, 45, 23);
+        blank9.setBounds(121, 290, 47, 23);
         getContentPane().add(blank9);
 
-        btnE.setBounds(219, 290, 45, 23);
+        btnE.setBounds(219, 290, 47, 23);
         getContentPane().add(btnE);
-        btnE.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        btnE.addActionListener(this);
 
-            }
-        });
-
-        btnnum1.setBounds(268, 290, 45, 23);
+        btnnum1.setBounds(268, 290, 47, 23);
         getContentPane().add(btnnum1);
         btnnum1.addActionListener(this);
 
-        btnnum2.setBounds(317, 290, 45, 23);
+        btnnum2.setBounds(317, 290, 47, 23);
         getContentPane().add(btnnum2);
         btnnum2.addActionListener(this);
 
-        btnnum3.setBounds(366, 290, 45, 23);
+        btnnum3.setBounds(366, 290, 47, 23);
         getContentPane().add(btnnum3);
         btnnum3.addActionListener(this);
 
-        btnminus.setBounds(415, 290, 45, 23);
+        btnminus.setBounds(415, 290, 47, 23);
         getContentPane().add(btnminus);
         btnminus.addActionListener(this);
 
 
-        blank12.setBounds(170, 323, 45, 23);
+        blank12.setBounds(170, 323, 47, 23);
         getContentPane().add(blank12);
 
-        blank11.setBounds(121, 323, 45, 23);
+        blank11.setBounds(121, 323, 47, 23);
         getContentPane().add(blank11);
 
-        btnF.setBounds(219, 323, 45, 23);
+        btnF.setBounds(219, 323, 47, 23);
         getContentPane().add(btnF);
-        btnF.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        btnF.addActionListener(this);
 
         btnnum0.setBounds(268, 323, 94, 23);
         getContentPane().add(btnnum0);
         btnnum0.addActionListener(this);
 
-        btndec.setBounds(366, 323, 45, 23);
+        btndec.setBounds(366, 323, 47, 23);
         getContentPane().add(btndec);
 
-        btnplus.setBounds(415, 323, 45, 23);
+        btnplus.setBounds(415, 323, 47, 23);
         getContentPane().add(btnplus);
         btnplus.addActionListener(this);
 
-        btnM_1.setBounds(465, 157, 45, 23);
+        btnM_1.setBounds(465, 157, 47, 23);
         getContentPane().add(btnM_1);
 
-        btnsqr.setBounds(465, 190, 45, 23);
+        btnsqr.setBounds(465, 190, 47, 23);
         getContentPane().add(btnsqr);
 
-        btnmod.setBounds(465, 224, 45, 23);
+        btnmod.setBounds(465, 224, 47, 23);
         getContentPane().add(btnmod);
 
-        btnI.setBounds(465, 258, 45, 23);
+        btnI.setBounds(465, 258, 47, 23);
         getContentPane().add(btnI);
         btnI.addActionListener(this);
 
-        btnEqual.setBounds(465, 290, 45, 56);
+        btnEqual.setBounds(465, 290, 47, 56);
         getContentPane().add(btnEqual);
         btnEqual.addActionListener(this);
 
         JButton btnempty = new JButton("");
-        btnempty.setBounds(465, 260, 45, 23);
+        btnempty.setBounds(465, 260, 47, 23);
         getContentPane().add(btnempty);
 
     }
@@ -371,33 +360,84 @@ public class Calculator extends JFrame implements ActionListener {
         if (e.getSource() == btnEqual) {
             switch (tempOper[0]) {
                 case 1:
-                    tempEqual[0] = tempNumOne[0] + tempNumTwo[0];
-                    textArea.setText(tempEqual[0] + "");
-                    tempNumOne[0] = -1;
-                    tempNumTwo[0] = -1;
-                    tempOper[0] = 0;
+                    if (currentSetting[0] == 1) { // convert to decimal add then back to hex and print
+                        String digits = "0123456789ABCDEF";
+                        numOneHex[0] = numOneHex[0].toUpperCase();
+                        int val = 0;
+                        for (int i = 0; i < numOneHex[0].length(); i++) {
+                            char c = numOneHex[0].charAt(i);
+                            int d = digits.indexOf(c);
+                            val = 16 * val + d;
+                        }
+                        tempNumOne[0] = val;
+                        ///
+                        numTwoHex[0] = numTwoHex[0].toUpperCase();
+                        val = 0;
+                        for (int i = 0; i < numTwoHex[0].length(); i++) {
+                            char c = numTwoHex[0].charAt(i);
+                            int d = digits.indexOf(c);
+                            val = 16 * val + d;
+                        }
+                        tempNumTwo[0] = val;
+                        tempEqual[0] = tempNumOne[0] + tempNumTwo[0];
+                        StringBuilder hexBuilder = new StringBuilder(sizeOfIntInHalfBytes);
+                        hexBuilder.setLength(sizeOfIntInHalfBytes);
+                        for (int i = sizeOfIntInHalfBytes - 1; i >= 0; --i) {
+                            int j = tempEqual[0] & halfByte;
+                            hexBuilder.setCharAt(i, hexDigits[j]);
+                            tempEqual[0] >>= numberOfBitsInAHalfByte;
+                        }
+
+                        textArea.setText(hexBuilder.toString());
+                    }
+                    ///
+                    if (currentSetting[0] == 2) { // use decimal so just add
+                        tempEqual[0] = tempNumOne[0] + tempNumTwo[0];
+                        textArea.setText(tempEqual[0] + "");
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                    }
                     break;
                 case 2:
-                    tempEqual[0] = tempNumOne[0] - tempNumTwo[0];
-                    textArea.setText(tempEqual[0] + "");
-                    tempNumOne[0] = -1;
-                    tempNumTwo[0] = -1;
-                    tempOper[0] = 0;
-                    break;
+                    if (currentSetting[0] == 2) {
+                        tempEqual[0] = tempNumOne[0] - tempNumTwo[0];
+                        textArea.setText(tempEqual[0] + "");
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                    }
+                        break;
                 case 3:
-                    tempEqual[0] = tempNumOne[0] * tempNumTwo[0];
-                    textArea.setText(tempEqual[0] + "");
-                    tempNumOne[0] = -1;
-                    tempNumTwo[0] = -1;
-                    tempOper[0] = 0;
+                    if (currentSetting[0] == 2) {
+                        tempEqual[0] = tempNumOne[0] * tempNumTwo[0];
+                        textArea.setText(tempEqual[0] + "");
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                    }
                     break;
                 case 4:
-                    tempEqual[0] = tempNumOne[0] / tempNumTwo[0];
-                    textArea.setText(tempEqual[0] + "");
-                    tempNumOne[0] = -1;
-                    tempNumTwo[0] = -1;
-                    tempOper[0] = 0;
+                    if (currentSetting[0] == 2) {
+                        tempEqual[0] = tempNumOne[0] / tempNumTwo[0];
+                        textArea.setText(tempEqual[0] + "");
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                    }
                     break;
+            }
+
+            if (currentSetting[0] == 1) {
+                StringBuilder hexBuilder = new StringBuilder(sizeOfIntInHalfBytes);
+                hexBuilder.setLength(sizeOfIntInHalfBytes);
+                for (int i = sizeOfIntInHalfBytes - 1; i >= 0; --i) {
+                    int j = tempEqual[0] & halfByte;
+                    hexBuilder.setCharAt(i, hexDigits[j]);
+                    tempEqual[0] >>= numberOfBitsInAHalfByte;
+                }
+
+                textArea.setText(hexBuilder.toString());
             }
         }
 
@@ -434,24 +474,35 @@ public class Calculator extends JFrame implements ActionListener {
         if (e.getSource() == btnnum3) {
             lastEntry[0] = 3;
             tempEqual[0] = -1;
-            if (tempOper[0] > 0) {
-                if (tempNumTwo[0] == -1) {
-                    tempNumTwo[0] = 3;
-                    textArea.setText(tempNumTwo[0] + "");
-                } else {
-                    tempNumTwo[0] = tempNumTwo[0] * 10;
-                    tempNumTwo[0] = tempNumTwo[0] + 3;
-                    textArea.setText(tempNumTwo[0] + "");
-                }
 
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0].concat("3");
+                } else {
+                    numOneHex[0].concat("3");
+                }
             }
-            if (tempNumOne[0] == -1) {
-                tempNumOne[0] = 3;
-                textArea.setText(tempNumOne[0] + "");
-            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
-                tempNumOne[0] = tempNumOne[0] * 10;
-                tempNumOne[0] = tempNumOne[0] + 3;
-                textArea.setText(tempNumOne[0] + "");
+
+            if (currentSetting[0] == 2) {
+                if (tempOper[0] > 0) {
+                    if (tempNumTwo[0] == -1) {
+                        tempNumTwo[0] = 3;
+                        textArea.setText(tempNumTwo[0] + "");
+                    } else {
+                        tempNumTwo[0] = tempNumTwo[0] * 10;
+                        tempNumTwo[0] = tempNumTwo[0] + 3;
+                        textArea.setText(tempNumTwo[0] + "");
+                    }
+
+                }
+                if (tempNumOne[0] == -1) {
+                    tempNumOne[0] = 3;
+                    textArea.setText(tempNumOne[0] + "");
+                } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                    tempNumOne[0] = tempNumOne[0] * 10;
+                    tempNumOne[0] = tempNumOne[0] + 3;
+                    textArea.setText(tempNumOne[0] + "");
+                }
             }
         }
 
@@ -462,62 +513,95 @@ public class Calculator extends JFrame implements ActionListener {
         if (e.getSource() == btnnum2) {
             lastEntry[0] = 2;
             tempEqual[0] = -1;
-            if (tempOper[0] > 0) {
-                if (tempNumTwo[0] == -1) {
-                    tempNumTwo[0] = 2;
-                    textArea.setText(tempNumTwo[0] + "");
-                } else {
-                    tempNumTwo[0] = tempNumTwo[0] * 10;
-                    tempNumTwo[0] = tempNumTwo[0] + 2;
-                    textArea.setText(tempNumTwo[0] + "");
-                }
 
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0].concat("2");
+                } else {
+                    numOneHex[0].concat("2");
+                }
             }
-            if (tempNumOne[0] == -1) {
-                tempNumOne[0] = 2;
-                textArea.setText(tempNumOne[0] + "");
-            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
-                tempNumOne[0] = tempNumOne[0] * 10;
-                tempNumOne[0] = tempNumOne[0] + 2;
-                textArea.setText(tempNumOne[0] + "");
+
+            if (currentSetting[0] == 2) {
+                if (tempOper[0] > 0) {
+                    if (tempNumTwo[0] == -1) {
+                        tempNumTwo[0] = 2;
+                        textArea.setText(tempNumTwo[0] + "");
+                    } else {
+                        tempNumTwo[0] = tempNumTwo[0] * 10;
+                        tempNumTwo[0] = tempNumTwo[0] + 2;
+                        textArea.setText(tempNumTwo[0] + "");
+                    }
+
+                }
+                if (tempNumOne[0] == -1) {
+                    tempNumOne[0] = 2;
+                    textArea.setText(tempNumOne[0] + "");
+                } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                    tempNumOne[0] = tempNumOne[0] * 10;
+                    tempNumOne[0] = tempNumOne[0] + 2;
+                    textArea.setText(tempNumOne[0] + "");
+                }
             }
         }
 
         if (e.getSource() == btnnum1) {
             lastEntry[0] = 1;
             tempEqual[0] = -1;
-            if (tempOper[0] > 0) {
-                if (tempNumTwo[0] == -1) {
-                    tempNumTwo[0] = 1;
-                    textArea.setText(tempNumTwo[0] + "");
-                } else {
-                    tempNumTwo[0] = tempNumTwo[0] * 10;
-                    tempNumTwo[0] = tempNumTwo[0] + 1;
-                    textArea.setText(tempNumTwo[0] + "");
-                }
 
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0].concat("1");
+                } else {
+                    numOneHex[0].concat("1");
+                }
             }
-            if (tempNumOne[0] == -1) {
-                tempNumOne[0] = 1;
-                textArea.setText(tempNumOne[0] + "");
-            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
-                tempNumOne[0] = tempNumOne[0] * 10;
-                tempNumOne[0] = tempNumOne[0] + 1;
-                textArea.setText(tempNumOne[0] + "");
+
+            if (currentSetting[0] == 2) {
+                if (tempOper[0] > 0) {
+                    if (tempNumTwo[0] == -1) {
+                        tempNumTwo[0] = 1;
+                        textArea.setText(tempNumTwo[0] + "");
+                    } else {
+                        tempNumTwo[0] = tempNumTwo[0] * 10;
+                        tempNumTwo[0] = tempNumTwo[0] + 1;
+                        textArea.setText(tempNumTwo[0] + "");
+                    }
+
+                }
+                if (tempNumOne[0] == -1) {
+                    tempNumOne[0] = 1;
+                    textArea.setText(tempNumOne[0] + "");
+                } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                    tempNumOne[0] = tempNumOne[0] * 10;
+                    tempNumOne[0] = tempNumOne[0] + 1;
+                    textArea.setText(tempNumOne[0] + "");
+                }
             }
         }
 
         if (e.getSource() == btnnum6) {
             lastEntry[0] = 6;
             tempEqual[0] = -1;
-            if (tempOper[0] > 0) {
-                if (tempNumTwo[0] == -1) {
-                    tempNumTwo[0] = 6;
-                    textArea.setText(tempNumTwo[0] + "");
+
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0].concat("6");
                 } else {
-                    tempNumTwo[0] = tempNumTwo[0] * 10;
-                    tempNumTwo[0] = tempNumTwo[0] + 6;
-                    textArea.setText(tempNumTwo[0] + "");
+                    numOneHex[0].concat("6");
+                }
+            }
+
+            if (currentSetting[0] == 2) {
+                if (tempOper[0] > 0) {
+                    if (tempNumTwo[0] == -1) {
+                        tempNumTwo[0] = 6;
+                        textArea.setText(tempNumTwo[0] + "");
+                    } else {
+                        tempNumTwo[0] = tempNumTwo[0] * 10;
+                        tempNumTwo[0] = tempNumTwo[0] + 6;
+                        textArea.setText(tempNumTwo[0] + "");
+                    }
                 }
 
             }
@@ -534,16 +618,26 @@ public class Calculator extends JFrame implements ActionListener {
         if (e.getSource() == btnnum5) {
             lastEntry[0] = 5;
             tempEqual[0] = -1;
-            if (tempOper[0] > 0) {
-                if (tempNumTwo[0] == -1) {
-                    tempNumTwo[0] = 5;
-                    textArea.setText(tempNumTwo[0] + "");
-                } else {
-                    tempNumTwo[0] = tempNumTwo[0] * 10;
-                    tempNumTwo[0] = tempNumTwo[0] + 5;
-                    textArea.setText(tempNumTwo[0] + "");
-                }
 
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0].concat("5");
+                } else {
+                    numOneHex[0].concat("5");
+                }
+            }
+
+            if (currentSetting[0] == 2) {
+                if (tempOper[0] > 0) {
+                    if (tempNumTwo[0] == -1) {
+                        tempNumTwo[0] = 5;
+                        textArea.setText(tempNumTwo[0] + "");
+                    } else {
+                        tempNumTwo[0] = tempNumTwo[0] * 10;
+                        tempNumTwo[0] = tempNumTwo[0] + 5;
+                        textArea.setText(tempNumTwo[0] + "");
+                    }
+                }
             }
             if (tempNumOne[0] == -1) {
                 tempNumOne[0] = 5;
@@ -558,16 +652,26 @@ public class Calculator extends JFrame implements ActionListener {
         if (e.getSource() == btnnum4) {
             lastEntry[0] = 4;
             tempEqual[0] = -1;
-            if (tempOper[0] > 0) {
-                if (tempNumTwo[0] == -1) {
-                    tempNumTwo[0] = 4;
-                    textArea.setText(tempNumTwo[0] + "");
-                } else {
-                    tempNumTwo[0] = tempNumTwo[0] * 10;
-                    tempNumTwo[0] = tempNumTwo[0] + 4;
-                    textArea.setText(tempNumTwo[0] + "");
-                }
 
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0].concat("4");
+                } else {
+                    numOneHex[0].concat("4");
+                }
+            }
+
+            if (currentSetting[0] == 2) {
+                if (tempOper[0] > 0) {
+                    if (tempNumTwo[0] == -1) {
+                        tempNumTwo[0] = 4;
+                        textArea.setText(tempNumTwo[0] + "");
+                    } else {
+                        tempNumTwo[0] = tempNumTwo[0] * 10;
+                        tempNumTwo[0] = tempNumTwo[0] + 4;
+                        textArea.setText(tempNumTwo[0] + "");
+                    }
+                }
             }
             if (tempNumOne[0] == -1) {
                 tempNumOne[0] = 4;
@@ -586,16 +690,26 @@ public class Calculator extends JFrame implements ActionListener {
         if (e.getSource() == btnnum9) {
             lastEntry[0] = 9;
             tempEqual[0] = -1;
-            if (tempOper[0] > 0) {
-                if (tempNumTwo[0] == -1) {
-                    tempNumTwo[0] = 9;
-                    textArea.setText(tempNumTwo[0] + "");
-                } else {
-                    tempNumTwo[0] = tempNumTwo[0] * 10;
-                    tempNumTwo[0] = tempNumTwo[0] + 9;
-                    textArea.setText(tempNumTwo[0] + "");
-                }
 
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0].concat("9");
+                } else {
+                    numOneHex[0].concat("9");
+                }
+            }
+
+            if (currentSetting[0] == 2) {
+                if (tempOper[0] > 0) {
+                    if (tempNumTwo[0] == -1) {
+                        tempNumTwo[0] = 9;
+                        textArea.setText(tempNumTwo[0] + "");
+                    } else {
+                        tempNumTwo[0] = tempNumTwo[0] * 10;
+                        tempNumTwo[0] = tempNumTwo[0] + 9;
+                        textArea.setText(tempNumTwo[0] + "");
+                    }
+                }
             }
             if (tempNumOne[0] == -1) {
                 tempNumOne[0] = 9;
@@ -610,16 +724,26 @@ public class Calculator extends JFrame implements ActionListener {
         if (e.getSource() == btnnum8) {
             lastEntry[0] = 8;
             tempEqual[0] = -1;
-            if (tempOper[0] > 0) {
-                if (tempNumTwo[0] == -1) {
-                    tempNumTwo[0] = 8;
-                    textArea.setText(tempNumTwo[0] + "");
-                } else {
-                    tempNumTwo[0] = tempNumTwo[0] * 10;
-                    tempNumTwo[0] = tempNumTwo[0] + 8;
-                    textArea.setText(tempNumTwo[0] + "");
-                }
 
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0].concat("8");
+                } else {
+                    numOneHex[0].concat("8");
+                }
+            }
+
+            if (currentSetting[0] == 2) {
+                if (tempOper[0] > 0) {
+                    if (tempNumTwo[0] == -1) {
+                        tempNumTwo[0] = 8;
+                        textArea.setText(tempNumTwo[0] + "");
+                    } else {
+                        tempNumTwo[0] = tempNumTwo[0] * 10;
+                        tempNumTwo[0] = tempNumTwo[0] + 8;
+                        textArea.setText(tempNumTwo[0] + "");
+                    }
+                }
             }
             if (tempNumOne[0] == -1) {
                 tempNumOne[0] = 8;
@@ -634,16 +758,26 @@ public class Calculator extends JFrame implements ActionListener {
         if (e.getSource() == btnnum7) {
             lastEntry[0] = 7;
             tempEqual[0] = -1;
-            if (tempOper[0] > 0) {
-                if (tempNumTwo[0] == -1) {
-                    tempNumTwo[0] = 7;
-                    textArea.setText(tempNumTwo[0] + "");
-                } else {
-                    tempNumTwo[0] = tempNumTwo[0] * 10;
-                    tempNumTwo[0] = tempNumTwo[0] + 7;
-                    textArea.setText(tempNumTwo[0] + "");
-                }
 
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0].concat("7");
+                } else {
+                    numOneHex[0].concat("7");
+                }
+            }
+
+            if (currentSetting[0] == 2) {
+                if (tempOper[0] > 0) {
+                    if (tempNumTwo[0] == -1) {
+                        tempNumTwo[0] = 7;
+                        textArea.setText(tempNumTwo[0] + "");
+                    } else {
+                        tempNumTwo[0] = tempNumTwo[0] * 10;
+                        tempNumTwo[0] = tempNumTwo[0] + 7;
+                        textArea.setText(tempNumTwo[0] + "");
+                    }
+                }
             }
             if (tempNumOne[0] == -1) {
                 tempNumOne[0] = 7;
@@ -681,14 +815,50 @@ public class Calculator extends JFrame implements ActionListener {
             rdbtnDec.setSelected(false);
             rdbtnOct.setSelected(false);
             rdbtnBin.setSelected(false);
+
+            if (tempOper[0] == 0 && tempNumOne[0] != -1) { // first num
+                StringBuilder hexBuilder = new StringBuilder(sizeOfIntInHalfBytes);
+                hexBuilder.setLength(sizeOfIntInHalfBytes);
+                for (int i = sizeOfIntInHalfBytes - 1; i >= 0; --i) {
+                    int j = tempNumOne[0] & halfByte;
+                    hexBuilder.setCharAt(i, hexDigits[j]);
+                    tempNumOne[0] >>= numberOfBitsInAHalfByte;
+                }
+                textArea.setText(hexBuilder.toString());
+            } else if (tempNumTwo[0] != -1 && tempEqual[0] == -1) { // second num
+
+                StringBuilder hexBuilder = new StringBuilder(sizeOfIntInHalfBytes);
+                hexBuilder.setLength(sizeOfIntInHalfBytes);
+                for (int i = sizeOfIntInHalfBytes - 1; i >= 0; --i) {
+                    int j = tempNumTwo[0] & halfByte;
+                    hexBuilder.setCharAt(i, hexDigits[j]);
+                    tempNumTwo[0] >>= numberOfBitsInAHalfByte;
+                }
+                textArea.setText(hexBuilder.toString());
+
+            } else { // equals num
+                StringBuilder hexBuilder = new StringBuilder(sizeOfIntInHalfBytes);
+                hexBuilder.setLength(sizeOfIntInHalfBytes);
+                for (int i = sizeOfIntInHalfBytes - 1; i >= 0; --i) {
+                    int j = tempEqual[0] & halfByte;
+                    hexBuilder.setCharAt(i, hexDigits[j]);
+                    tempEqual[0] >>= numberOfBitsInAHalfByte;
+                }
+
+                textArea.setText(hexBuilder.toString());
+            }
+            previousSetting[0] = 1;
         }
 
         if (e.getSource() == rdbtnDec) {
             currentSetting[0] = 2;
+
             rdbtnHex.setSelected(false);
             rdbtnDec.setSelected(true);
             rdbtnOct.setSelected(false);
             rdbtnBin.setSelected(false);
+
+            previousSetting[0] = 2;
         }
 
         if (e.getSource() == rdbtnOct) {
@@ -697,6 +867,8 @@ public class Calculator extends JFrame implements ActionListener {
             rdbtnDec.setSelected(false);
             rdbtnOct.setSelected(true);
             rdbtnBin.setSelected(false);
+
+            previousSetting[0] = 3;
         }
 
         if (e.getSource() == rdbtnBin) {
@@ -705,27 +877,37 @@ public class Calculator extends JFrame implements ActionListener {
             rdbtnDec.setSelected(false);
             rdbtnOct.setSelected(false);
             rdbtnBin.setSelected(true);
+
+            if (previousSetting[0] == 2) {
+                if (tempOper[0] == 0 && tempNumOne[0] != -1) { // first num
+
+                } else if (tempNumTwo[0] != -1 && tempEqual[0] == -1) { // second num
+
+
+                } else { // equals num
+
+                }
+            }
+
+            previousSetting[0] = 4;
         }
 
         if (e.getSource() == btnbs) {
             if (tempOper[0] == 0 && tempNumOne[0] != -1) {
-                if (tempNumOne[0] >=10 ) {
+                if (tempNumOne[0] >= 10) {
                     tempNumOne[0] = tempNumOne[0] - lastEntry[0];
                     tempNumOne[0] = tempNumOne[0] / 10;
                     textArea.setText(tempNumOne[0] + "");
-                }
-                else {
+                } else {
                     tempNumOne[0] = 0;
                     textArea.setText(tempNumOne[0] + "");
                 }
-            }
-            else if(tempOper[0] != 0 && tempNumTwo[0] != -1) {
-                if (tempNumTwo[0] >=10  && tempOper[0] != 0) {
+            } else if (tempOper[0] != 0 && tempNumTwo[0] != -1) {
+                if (tempNumTwo[0] >= 10 && tempOper[0] != 0) {
                     tempNumTwo[0] = tempNumTwo[0] - lastEntry[0];
                     tempNumTwo[0] = tempNumTwo[0] / 10;
                     textArea.setText(tempNumTwo[0] + "");
-                }
-                else {
+                } else {
                     tempNumTwo[0] = 0;
                     textArea.setText(tempNumTwo[0] + "");
                 }
@@ -733,21 +915,97 @@ public class Calculator extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == btnpm) {
-            if (tempOper[0] == 0 && tempNumOne[0] != -1) {
+            if (tempOper[0] == 0 && tempNumOne[0] != -1) { // first num
                 tempNumOne[0] = tempNumOne[0] * -1;
                 textArea.setText(tempNumOne[0] + "");
-            }
-            else if (tempNumTwo[0] != -1 && tempEqual[0] == -1) {
+            } else if (tempNumTwo[0] != -1 && tempEqual[0] == -1) { // second num
                 tempNumTwo[0] = tempNumTwo[0] * -1;
                 textArea.setText(tempNumTwo[0] + "");
-            }
-            else {
+            } else { // equals num
                 tempEqual[0] = tempEqual[0] * -1;
                 textArea.setText(tempEqual[0] + "");
             }
 
         }
 
-        
+        if (e.getSource() == btnA) {
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0].concat("A");
+                    textArea.setText(numTwoHex[0]);
+                } else {
+                    numOneHex[0].concat("A");
+                    textArea.setText(numOneHex[0]);
+                }
+            }
+        }
+
+        if (e.getSource() == btnB) {
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0].concat("B");
+                    textArea.setText(numTwoHex[0]);
+                } else {
+                    numOneHex[0].concat("B");
+                    textArea.setText(numOneHex[0]);
+                }
+            }
+        }
+
+        if (e.getSource() == btnC_1) {
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0].concat("C");
+                    textArea.setText(numTwoHex[0]);
+                } else {
+                    numOneHex[0].concat("C");
+                    textArea.setText(numOneHex[0]);
+                }
+            }
+        }
+
+        if (e.getSource() == btnD) {
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0].concat("D");
+                    textArea.setText(numTwoHex[0]);
+                } else {
+                    numOneHex[0].concat("D");
+                    textArea.setText(numOneHex[0]);
+                }
+            }
+        }
+
+        if (e.getSource() == btnE) {
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0].concat("E");
+                    textArea.setText(numTwoHex[0]);
+                } else {
+                    numOneHex[0].concat("E");
+                    textArea.setText(numOneHex[0]);
+                }
+            }
+        }
+
+        if (e.getSource() == btnF) {
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0].concat("F");
+                    textArea.setText(numTwoHex[0]);
+                } else {
+                    numOneHex[0].concat("F");
+                    textArea.setText(numOneHex[0]);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
     }
 }
