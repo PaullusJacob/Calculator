@@ -9,8 +9,8 @@ import java.util.List;
 
 public class Calculator extends JFrame implements ActionListener {
 
-
-    dectohex convert = new dectohex();
+    dectobin dectobin = new dectobin();
+    bintodec bintodec = new bintodec();
 
     private static final int sizeOfIntInHalfBytes = 8;
     private static final int numberOfBitsInAHalfByte = 4;
@@ -28,8 +28,8 @@ public class Calculator extends JFrame implements ActionListener {
     int previousSetting[] = {2};
     String numOneHex[] = {""};
     String numTwoHex[] = {""};
-    List<String> oneArray = new ArrayList<String>();
-    List<String> twoArray = new ArrayList<String>();
+    List<String> binOneArray = new ArrayList<String>();
+    List<String> binTwoArray = new ArrayList<String>();
 
 
     JToolBar toolBar = new JToolBar();
@@ -360,36 +360,36 @@ public class Calculator extends JFrame implements ActionListener {
         if (e.getSource() == btnEqual) {
             switch (tempOper[0]) {
                 case 1:
-                    if (currentSetting[0] == 1) { // convert to decimal add then back to hex and print
-                        String digits = "0123456789ABCDEF";
-                        numOneHex[0] = numOneHex[0].toUpperCase();
-                        int val = 0;
-                        for (int i = 0; i < numOneHex[0].length(); i++) {
-                            char c = numOneHex[0].charAt(i);
-                            int d = digits.indexOf(c);
-                            val = 16 * val + d;
-                        }
-                        tempNumOne[0] = val;
-                        ///
-                        numTwoHex[0] = numTwoHex[0].toUpperCase();
-                        val = 0;
-                        for (int i = 0; i < numTwoHex[0].length(); i++) {
-                            char c = numTwoHex[0].charAt(i);
-                            int d = digits.indexOf(c);
-                            val = 16 * val + d;
-                        }
-                        tempNumTwo[0] = val;
-                        tempEqual[0] = tempNumOne[0] + tempNumTwo[0];
-                        StringBuilder hexBuilder = new StringBuilder(sizeOfIntInHalfBytes);
-                        hexBuilder.setLength(sizeOfIntInHalfBytes);
-                        for (int i = sizeOfIntInHalfBytes - 1; i >= 0; --i) {
-                            int j = tempEqual[0] & halfByte;
-                            hexBuilder.setCharAt(i, hexDigits[j]);
-                            tempEqual[0] >>= numberOfBitsInAHalfByte;
-                        }
-
-                        textArea.setText(hexBuilder.toString());
-                    }
+//                    if (currentSetting[0] == 1) { // convert to decimal add then back to hex and print
+//                        String digits = "0123456789ABCDEF";
+//                        numOneHex[0] = numOneHex[0].toUpperCase();
+//                        int val = 0;
+//                        for (int i = 0; i < numOneHex[0].length(); i++) {
+//                            char c = numOneHex[0].charAt(i);
+//                            int d = digits.indexOf(c);
+//                            val = 16 * val + d;
+//                        }
+//                        tempNumOne[0] = val;
+//                        ///
+//                        numTwoHex[0] = numTwoHex[0].toUpperCase();
+//                        val = 0;
+//                        for (int i = 0; i < numTwoHex[0].length(); i++) {
+//                            char c = numTwoHex[0].charAt(i);
+//                            int d = digits.indexOf(c);
+//                            val = 16 * val + d;
+//                        }
+//                        tempNumTwo[0] = val;
+//                        tempEqual[0] = tempNumOne[0] + tempNumTwo[0];
+//                        StringBuilder hexBuilder = new StringBuilder(sizeOfIntInHalfBytes);
+//                        hexBuilder.setLength(sizeOfIntInHalfBytes);
+//                        for (int i = sizeOfIntInHalfBytes - 1; i >= 0; --i) {
+//                            int j = tempEqual[0] & halfByte;
+//                            hexBuilder.setCharAt(i, hexDigits[j]);
+//                            tempEqual[0] >>= numberOfBitsInAHalfByte;
+//                        }
+//
+//                        textArea.setText(hexBuilder.toString());
+//                    }
                     ///
                     if (currentSetting[0] == 2) { // use decimal so just add
                         tempEqual[0] = tempNumOne[0] + tempNumTwo[0];
@@ -397,6 +397,32 @@ public class Calculator extends JFrame implements ActionListener {
                         tempNumOne[0] = -1;
                         tempNumTwo[0] = -1;
                         tempOper[0] = 0;
+                    }
+                    ///
+                    if (currentSetting[0] == 4) {
+                        String binStringOne = "";
+                        String binStringTwo = "";
+                        String binEqual = "";
+                        for (int i = 0; i < binOneArray.size(); i ++) {
+                            binStringOne = binStringOne + binOneArray.get(i);
+                        }
+                        for (int i = 0; i < binTwoArray.size(); i++ ) {
+                            binStringTwo = binStringTwo + binTwoArray.get(i);
+                        }
+                        tempNumOne[0] = bintodec.integerfrmbinary(binStringOne);
+                        tempNumTwo[0] = bintodec.integerfrmbinary(binStringTwo);
+
+                        tempEqual[0] = tempNumTwo[0] + tempNumOne[0];
+                        binEqual = dectobin.printBinaryFormat(tempEqual[0]);
+                        textArea.setText(binEqual);
+
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                        binTwoArray.clear();
+                        binOneArray.clear();
+                        binEqual = "";
+
                     }
                     break;
                 case 2:
@@ -407,7 +433,31 @@ public class Calculator extends JFrame implements ActionListener {
                         tempNumTwo[0] = -1;
                         tempOper[0] = 0;
                     }
-                        break;
+                    ///
+                    if (currentSetting[0] == 4) {
+                        String binStringOne = "";
+                        String binStringTwo = "";
+                        String binEqual = "";
+                        for (int i = 0; i < binOneArray.size(); i ++) {
+                            binStringOne = binStringOne + binOneArray.get(i);
+                            binStringTwo = binStringTwo + binTwoArray.get(i);
+                        }
+                        tempNumOne[0] = bintodec.integerfrmbinary(binStringOne);
+                        tempNumTwo[0] = bintodec.integerfrmbinary(binStringTwo);
+
+                        tempEqual[0] = tempNumOne[0] - tempNumTwo[0];
+                        binEqual = dectobin.printBinaryFormat(tempEqual[0]);
+                        textArea.setText(binEqual);
+
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                        binTwoArray.clear();
+                        binOneArray.clear();
+                        binEqual = "";
+
+                    }
+                    break;
                 case 3:
                     if (currentSetting[0] == 2) {
                         tempEqual[0] = tempNumOne[0] * tempNumTwo[0];
@@ -446,24 +496,48 @@ public class Calculator extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == btnnum0) {
-            if (tempOper[0] > 0) {
-                if (tempNumTwo[0] == -1) {
-                    tempNumTwo[0] = 0;
-                    textArea.setText(tempNumTwo[0] + "");
-                } else {
-                    tempNumTwo[0] = tempNumTwo[0] * 10;
-                    tempNumTwo[0] = tempNumTwo[0] + 0;
-                    textArea.setText(tempNumTwo[0] + "");
-                }
 
+            if (currentSetting[0] == 2) {
+                if (tempOper[0] > 0) {
+                    if (tempNumTwo[0] == -1) {
+                        tempNumTwo[0] = 0;
+                        textArea.setText(tempNumTwo[0] + "");
+                    } else {
+                        tempNumTwo[0] = tempNumTwo[0] * 10;
+                        tempNumTwo[0] = tempNumTwo[0] + 0;
+                        textArea.setText(tempNumTwo[0] + "");
+                    }
+
+                }
+                if (tempNumOne[0] == -1) {
+                    tempNumOne[0] = 0;
+                    textArea.setText(tempNumOne[0] + "");
+                } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                    tempNumOne[0] = tempNumOne[0] * 10;
+                    tempNumOne[0] = tempNumOne[0] + 0;
+                    textArea.setText(tempNumOne[0] + "");
+                }
             }
-            if (tempNumOne[0] == -1) {
-                tempNumOne[0] = 1;
-                textArea.setText(tempNumOne[0] + "");
-            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
-                tempNumOne[0] = tempNumOne[0] * 10;
-                tempNumOne[0] = tempNumOne[0] + 0;
-                textArea.setText(tempNumOne[0] + "");
+
+            if (currentSetting[0] == 4) {
+
+                if (tempOper[0] == 0) {
+                    binOneArray.add("0");
+                    String currentText = "";
+                    for (int i = 0; i < binOneArray.size(); i++) {
+                        currentText = currentText + binOneArray.get(i);
+                    }
+                    textArea.setText(currentText);
+
+                }
+                if (tempOper[0] > 0) {
+                    binTwoArray.add("0");
+                    String currentText = "";
+                    for (int i = 0; i < binTwoArray.size(); i++) {
+                        currentText = currentText + binTwoArray.get(i);
+                    }
+                    textArea.setText(currentText);
+                }
             }
         }
 
@@ -551,7 +625,7 @@ public class Calculator extends JFrame implements ActionListener {
 
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
-                    numTwoHex[0].concat("1");
+                    numTwoHex[0] = numTwoHex[0] + "1";
                 } else {
                     numOneHex[0].concat("1");
                 }
@@ -578,6 +652,28 @@ public class Calculator extends JFrame implements ActionListener {
                     textArea.setText(tempNumOne[0] + "");
                 }
             }
+
+            if (currentSetting[0] == 4) {
+
+                if (tempOper[0] == 0) {
+                    binOneArray.add("1");
+                    String currentText = "";
+                    for (int i = 0; i < binOneArray.size(); i++) {
+                        currentText = currentText + binOneArray.get(i);
+                    }
+                    textArea.setText(currentText);
+
+                }
+                if (tempOper[0] > 0) {
+                    binTwoArray.add("1");
+                    String currentText = "";
+                    for (int i = 0; i < binTwoArray.size(); i++) {
+                        currentText = currentText + binTwoArray.get(i);
+                    }
+                    textArea.setText(currentText);
+                }
+            }
+
         }
 
         if (e.getSource() == btnnum6) {
@@ -795,6 +891,9 @@ public class Calculator extends JFrame implements ActionListener {
             tempNumTwo[0] = -1;
             tempEqual[0] = -1;
             tempOper[0] = 0;
+            binTwoArray.clear();
+            binOneArray.clear();
+
         }
 
         if (e.getSource() == btnCe) {
@@ -802,9 +901,11 @@ public class Calculator extends JFrame implements ActionListener {
                 if (tempOper[0] == 0) {
                     tempNumOne[0] = -1;
                     textArea.setText(0 + "");
+                    binOneArray.clear();
                 } else {
                     tempNumTwo[0] = -1;
                     textArea.setText(0 + "");
+                    binTwoArray.clear();
                 }
             }
         }
