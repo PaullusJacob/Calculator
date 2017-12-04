@@ -1,14 +1,17 @@
 public class dectobin {
-    public static int convert(int dec) {
-        if ( == 0) {
-            return "0";
+
+    public String printBinaryFormat(int number){
+        String returnString = "";
+        int binary[] = new int[25];
+        int index = 0;
+        while(number > 0){
+            binary[index++] = number%2;
+            number = number/2;
         }
-        String binary = "";
-        while (n > 0) {
-            int rem = n % 2;
-            binary = rem + binary;
-            n = n / 2;
+        for(int i = index-1;i >= 0;i--){
+            returnString = returnString + binary[i];
         }
-        return binary;
+        return returnString;
     }
+
 }
