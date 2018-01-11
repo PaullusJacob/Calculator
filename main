@@ -1,6 +1,10 @@
+// Jacob Paullus JDP160430
+// CS2336 Khan
+// Description: Driver function
+
 import javax.swing.JFrame;
 
-public class MyFirstCalc {
+public class Main {
     public static void main(String args[] ) {
         Calculator mycalc = new Calculator();
         mycalc.setVisible(true);
