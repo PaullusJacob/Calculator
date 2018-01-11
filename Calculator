@@ -1,5 +1,6 @@
-//NO package statement
-//Calculator.java
+// Jacob Paullus JDP160430
+// CS2336 Khan
+// Description: Programming calculator from windows(modified)
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -11,7 +12,12 @@ public class Calculator extends JFrame implements ActionListener {
 
     dectobin dectobin = new dectobin();
     bintodec bintodec = new bintodec();
+    hextodec hextodec = new hextodec();
+    dectohex dectohex = new dectohex();
+    octtodec octtodec = new octtodec();
+    dectooct dectooct = new dectooct();
 
+    // various number holding variables
     private static final int sizeOfIntInHalfBytes = 8;
     private static final int numberOfBitsInAHalfByte = 4;
     private static final int halfByte = 0x0F;
@@ -30,8 +36,11 @@ public class Calculator extends JFrame implements ActionListener {
     String numTwoHex[] = {""};
     List<String> binOneArray = new ArrayList<String>();
     List<String> binTwoArray = new ArrayList<String>();
+    int octalOne[] = {-1};
+    int octalTwo[] = {-1};
 
 
+    // makung the buttons + labels
     JToolBar toolBar = new JToolBar();
     JButton btnView = new JButton("View");
     JButton btnEdit = new JButton("Edit");
@@ -91,6 +100,7 @@ public class Calculator extends JFrame implements ActionListener {
     JButton btnE = new JButton("E");
     JButton blank9 = new JButton("");
     JButton blank10 = new JButton("");
+    JPopupMenu popup = new JPopupMenu();
 
 
     public Calculator() {
@@ -98,28 +108,13 @@ public class Calculator extends JFrame implements ActionListener {
         getContentPane().add(toolBar);
 
         toolBar.add(btnView);
-        btnView.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        btnView.addActionListener(this);
 
         toolBar.add(btnEdit);
-        btnEdit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        btnEdit.addActionListener(this);
 
         toolBar.add(btnHelp);
-        btnHelp.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        btnHelp.addActionListener(this);
 
         textArea.setBounds(28, 27, 482, 64);
         getContentPane().add(textArea);
@@ -147,42 +142,22 @@ public class Calculator extends JFrame implements ActionListener {
         rdbtnQword.setBounds(28, 269, 73, 23);
         getContentPane().add(rdbtnQword);
         rdbtnQword.setSelected(true);
-        rdbtnQword.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        rdbtnQword.addActionListener(this);
 
         rdbtnDword.setBounds(28, 290, 73, 23);
         getContentPane().add(rdbtnDword);
         rdbtnDword.setSelected(false);
-        rdbtnDword.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        rdbtnDword.addActionListener(this);
 
         rdbtnWord.setBounds(28, 311, 73, 23);
         getContentPane().add(rdbtnWord);
         rdbtnWord.setSelected(false);
-        rdbtnWord.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        rdbtnWord.addActionListener(this);
 
         rdbtnByte.setBounds(28, 332, 73, 23);
         getContentPane().add(rdbtnByte);
         rdbtnByte.setSelected(false);
-        rdbtnByte.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        rdbtnByte.addActionListener(this);
 
         blank2.setBounds(170, 157, 47, 23);
         getContentPane().add(blank2);
@@ -355,42 +330,24 @@ public class Calculator extends JFrame implements ActionListener {
 
     }
 
+   // Current setting is hex/dec/bin/oct. Tempnum is the number being entered at the time. Same goes for tempHex and octalOne. To solve hex and binary, read in as string then convert to dec do math and convert back. For octal convert change base to 10 do math then back to 8.
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == btnEqual) {
             switch (tempOper[0]) {
                 case 1:
-//                    if (currentSetting[0] == 1) { // convert to decimal add then back to hex and print
-//                        String digits = "0123456789ABCDEF";
-//                        numOneHex[0] = numOneHex[0].toUpperCase();
-//                        int val = 0;
-//                        for (int i = 0; i < numOneHex[0].length(); i++) {
-//                            char c = numOneHex[0].charAt(i);
-//                            int d = digits.indexOf(c);
-//                            val = 16 * val + d;
-//                        }
-//                        tempNumOne[0] = val;
-//                        ///
-//                        numTwoHex[0] = numTwoHex[0].toUpperCase();
-//                        val = 0;
-//                        for (int i = 0; i < numTwoHex[0].length(); i++) {
-//                            char c = numTwoHex[0].charAt(i);
-//                            int d = digits.indexOf(c);
-//                            val = 16 * val + d;
-//                        }
-//                        tempNumTwo[0] = val;
-//                        tempEqual[0] = tempNumOne[0] + tempNumTwo[0];
-//                        StringBuilder hexBuilder = new StringBuilder(sizeOfIntInHalfBytes);
-//                        hexBuilder.setLength(sizeOfIntInHalfBytes);
-//                        for (int i = sizeOfIntInHalfBytes - 1; i >= 0; --i) {
-//                            int j = tempEqual[0] & halfByte;
-//                            hexBuilder.setCharAt(i, hexDigits[j]);
-//                            tempEqual[0] >>= numberOfBitsInAHalfByte;
-//                        }
-//
-//                        textArea.setText(hexBuilder.toString());
-//                    }
-                    ///
+                    if (currentSetting[0] == 1) {
+                        tempNumOne[0] = hextodec.convert(numOneHex[0]);
+                        tempNumTwo[0] = hextodec.convert(numTwoHex[0]);
+                        tempEqual[0] = tempNumOne[0] + tempNumTwo[0];
+                        textArea.setText(dectohex.convert(tempEqual[0]));
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                        numOneHex[0] = "";
+                        numTwoHex[0] = "";
+                    }
+
                     if (currentSetting[0] == 2) { // use decimal so just add
                         tempEqual[0] = tempNumOne[0] + tempNumTwo[0];
                         textArea.setText(tempEqual[0] + "");
@@ -398,7 +355,19 @@ public class Calculator extends JFrame implements ActionListener {
                         tempNumTwo[0] = -1;
                         tempOper[0] = 0;
                     }
-                    ///
+
+                    if (currentSetting[0] == 3) {
+                        tempNumOne[0] = octtodec.convert(octalOne[0]);
+                        tempNumTwo[0] = octtodec.convert(octalTwo[0]);
+                        tempEqual[0] = tempNumOne[0] + tempNumTwo[0];
+                        textArea.setText(dectooct.convert(tempEqual[0]) + "");
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                        octalOne[0] = -1;
+                        octalTwo[0] = -1;
+                    }
+
                     if (currentSetting[0] == 4) {
                         String binStringOne = "";
                         String binStringTwo = "";
@@ -409,11 +378,11 @@ public class Calculator extends JFrame implements ActionListener {
                         for (int i = 0; i < binTwoArray.size(); i++ ) {
                             binStringTwo = binStringTwo + binTwoArray.get(i);
                         }
-                        tempNumOne[0] = bintodec.integerfrmbinary(binStringOne);
-                        tempNumTwo[0] = bintodec.integerfrmbinary(binStringTwo);
+                        tempNumOne[0] = bintodec.convert(binStringOne);
+                        tempNumTwo[0] = bintodec.convert(binStringTwo);
 
                         tempEqual[0] = tempNumTwo[0] + tempNumOne[0];
-                        binEqual = dectobin.printBinaryFormat(tempEqual[0]);
+                        binEqual = dectobin.convert(tempEqual[0]);
                         textArea.setText(binEqual);
 
                         tempNumOne[0] = -1;
@@ -426,12 +395,36 @@ public class Calculator extends JFrame implements ActionListener {
                     }
                     break;
                 case 2:
+                    if (currentSetting[0] == 1) { // convert to decimal add then back to hex and print
+                        tempNumOne[0] = hextodec.convert(numOneHex[0]);
+                        tempNumTwo[0] = hextodec.convert(numTwoHex[0]);
+                        tempEqual[0] = tempNumOne[0] - tempNumTwo[0];
+                        textArea.setText(dectohex.convert(tempEqual[0]));
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                        numOneHex[0] = "";
+                        numTwoHex[0] = "";
+                    }
+
                     if (currentSetting[0] == 2) {
                         tempEqual[0] = tempNumOne[0] - tempNumTwo[0];
                         textArea.setText(tempEqual[0] + "");
                         tempNumOne[0] = -1;
                         tempNumTwo[0] = -1;
                         tempOper[0] = 0;
+                    }
+
+                    if (currentSetting[0] == 3) {
+                        tempNumOne[0] = octtodec.convert(octalOne[0]);
+                        tempNumTwo[0] = octtodec.convert(octalTwo[0]);
+                        tempEqual[0] = tempNumOne[0] - tempNumTwo[0];
+                        textArea.setText(dectooct.convert(tempEqual[0]) + "");
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                        octalOne[0] = -1;
+                        octalTwo[0] = -1;
                     }
                     ///
                     if (currentSetting[0] == 4) {
@@ -440,13 +433,15 @@ public class Calculator extends JFrame implements ActionListener {
                         String binEqual = "";
                         for (int i = 0; i < binOneArray.size(); i ++) {
                             binStringOne = binStringOne + binOneArray.get(i);
+                        }
+                        for (int i = 0; i < binTwoArray.size(); i++ ) {
                             binStringTwo = binStringTwo + binTwoArray.get(i);
                         }
-                        tempNumOne[0] = bintodec.integerfrmbinary(binStringOne);
-                        tempNumTwo[0] = bintodec.integerfrmbinary(binStringTwo);
+                        tempNumOne[0] = bintodec.convert(binStringOne);
+                        tempNumTwo[0] = bintodec.convert(binStringTwo);
 
                         tempEqual[0] = tempNumOne[0] - tempNumTwo[0];
-                        binEqual = dectobin.printBinaryFormat(tempEqual[0]);
+                        binEqual = dectobin.convert(tempEqual[0]);
                         textArea.setText(binEqual);
 
                         tempNumOne[0] = -1;
@@ -459,6 +454,18 @@ public class Calculator extends JFrame implements ActionListener {
                     }
                     break;
                 case 3:
+                    if (currentSetting[0] == 1) { // convert to decimal add then back to hex and print
+                        tempNumOne[0] = hextodec.convert(numOneHex[0]);
+                        tempNumTwo[0] = hextodec.convert(numTwoHex[0]);
+                        tempEqual[0] = tempNumOne[0] * tempNumTwo[0];
+                        textArea.setText(dectohex.convert(tempEqual[0]));
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                        numOneHex[0] = "";
+                        numTwoHex[0] = "";
+                    }
+
                     if (currentSetting[0] == 2) {
                         tempEqual[0] = tempNumOne[0] * tempNumTwo[0];
                         textArea.setText(tempEqual[0] + "");
@@ -466,14 +473,102 @@ public class Calculator extends JFrame implements ActionListener {
                         tempNumTwo[0] = -1;
                         tempOper[0] = 0;
                     }
+
+                    if (currentSetting[0] == 3) {
+                        tempNumOne[0] = octtodec.convert(octalOne[0]);
+                        tempNumTwo[0] = octtodec.convert(octalTwo[0]);
+                        tempEqual[0] = tempNumOne[0] * tempNumTwo[0];
+                        textArea.setText(dectooct.convert(tempEqual[0]) + "");
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                        octalOne[0] = -1;
+                        octalTwo[0] = -1;
+                    }
+
+                    if (currentSetting[0] == 4) {
+                        String binStringOne = "";
+                        String binStringTwo = "";
+                        String binEqual = "";
+                        for (int i = 0; i < binOneArray.size(); i ++) {
+                            binStringOne = binStringOne + binOneArray.get(i);
+                        }
+                        for (int i = 0; i < binTwoArray.size(); i++ ) {
+                            binStringTwo = binStringTwo + binTwoArray.get(i);
+                        }
+                        tempNumOne[0] = bintodec.convert(binStringOne);
+                        tempNumTwo[0] = bintodec.convert(binStringTwo);
+
+                        tempEqual[0] = tempNumOne[0] * tempNumTwo[0];
+                        binEqual = dectobin.convert(tempEqual[0]);
+                        textArea.setText(binEqual);
+
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                        binTwoArray.clear();
+                        binOneArray.clear();
+                        binEqual = "";
+
+                    }
                     break;
                 case 4:
+                    if (currentSetting[0] == 1) { // convert to decimal add then back to hex and print
+                        tempNumOne[0] = hextodec.convert(numOneHex[0]);
+                        tempNumTwo[0] = hextodec.convert(numTwoHex[0]);
+                        tempEqual[0] = tempNumOne[0] / tempNumTwo[0];
+                        textArea.setText(dectohex.convert(tempEqual[0]));
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                        numOneHex[0] = "";
+                        numTwoHex[0] = "";
+                    }
+
                     if (currentSetting[0] == 2) {
                         tempEqual[0] = tempNumOne[0] / tempNumTwo[0];
                         textArea.setText(tempEqual[0] + "");
                         tempNumOne[0] = -1;
                         tempNumTwo[0] = -1;
                         tempOper[0] = 0;
+                    }
+
+                    if (currentSetting[0] == 3) {
+                        tempNumOne[0] = octtodec.convert(octalOne[0]);
+                        tempNumTwo[0] = octtodec.convert(octalTwo[0]);
+                        tempEqual[0] = tempNumOne[0] / tempNumTwo[0];
+                        textArea.setText(dectooct.convert(tempEqual[0]) + "");
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                        octalOne[0] = -1;
+                        octalTwo[0] = -1;
+                    }
+
+                    if (currentSetting[0] == 4) {
+                        String binStringOne = "";
+                        String binStringTwo = "";
+                        String binEqual = "";
+                        for (int i = 0; i < binOneArray.size(); i ++) {
+                            binStringOne = binStringOne + binOneArray.get(i);
+                        }
+                        for (int i = 0; i < binTwoArray.size(); i++ ) {
+                            binStringTwo = binStringTwo + binTwoArray.get(i);
+                        }
+                        tempNumOne[0] = bintodec.convert(binStringOne);
+                        tempNumTwo[0] = bintodec.convert(binStringTwo);
+
+                        tempEqual[0] = tempNumOne[0] / tempNumTwo[0];
+                        binEqual = dectobin.convert(tempEqual[0]);
+                        textArea.setText(binEqual);
+
+                        tempNumOne[0] = -1;
+                        tempNumTwo[0] = -1;
+                        tempOper[0] = 0;
+                        binTwoArray.clear();
+                        binOneArray.clear();
+                        binEqual = "";
+
                     }
                     break;
             }
@@ -497,6 +592,16 @@ public class Calculator extends JFrame implements ActionListener {
 
         if (e.getSource() == btnnum0) {
 
+            if (currentSetting[0] == 1) {
+                if (tempOper[0] > 0) {
+                    numTwoHex[0] = numTwoHex[0] + "0";
+                    textArea.setText(numTwoHex[0]);
+                } else {
+                    numOneHex[0] = numOneHex[0] + "0";
+                    textArea.setText(numOneHex[0]);
+                }
+            }
+
             if (currentSetting[0] == 2) {
                 if (tempOper[0] > 0) {
                     if (tempNumTwo[0] == -1) {
@@ -516,6 +621,28 @@ public class Calculator extends JFrame implements ActionListener {
                     tempNumOne[0] = tempNumOne[0] * 10;
                     tempNumOne[0] = tempNumOne[0] + 0;
                     textArea.setText(tempNumOne[0] + "");
+                }
+            }
+
+            if (currentSetting[0] == 3) {
+                if (tempOper[0] > 0) {
+                    if (octalTwo[0] == -1) {
+                        octalTwo[0] = 0;
+                        textArea.setText(octalTwo[0] + "");
+                    } else if (octalTwo[0] != -1) {
+                        octalTwo[0] = octalTwo[0] * 10;
+                        octalTwo[0] += 0;
+                        textArea.setText(octalTwo[0] + "");
+                    }
+
+                }
+                if (octalOne[0] == -1) {
+                    octalOne[0] = 0;
+                    textArea.setText(octalOne[0] + "");
+                } else if (octalOne[0] != -1 && tempOper[0] == 0) {
+                    octalOne[0] = octalOne[0] * 10;
+                    octalOne[0] += 0;
+                    textArea.setText(octalOne[0] + "");
                 }
             }
 
@@ -551,9 +678,11 @@ public class Calculator extends JFrame implements ActionListener {
 
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
-                    numTwoHex[0].concat("3");
+                    numTwoHex[0] = numTwoHex[0] + "3";
+                    textArea.setText(numTwoHex[0]);
                 } else {
-                    numOneHex[0].concat("3");
+                    numOneHex[0] = numOneHex[0] + "3";
+                    textArea.setText(numOneHex[0]);
                 }
             }
 
@@ -578,6 +707,28 @@ public class Calculator extends JFrame implements ActionListener {
                     textArea.setText(tempNumOne[0] + "");
                 }
             }
+
+            if (currentSetting[0] == 3) {
+                if (tempOper[0] > 0) {
+                    if (octalTwo[0] == -1) {
+                        octalTwo[0] = 3;
+                        textArea.setText(octalTwo[0] + "");
+                    } else if (octalTwo[0] != -1) {
+                        octalTwo[0] = octalTwo[0] * 10;
+                        octalTwo[0] += 3;
+                        textArea.setText(octalTwo[0] + "");
+                    }
+
+                }
+                if (octalOne[0] == -1) {
+                    octalOne[0] = 3;
+                    textArea.setText(octalOne[0] + "");
+                } else if (octalOne[0] != -1 && tempOper[0] == 0) {
+                    octalOne[0] = octalOne[0] * 10;
+                    octalOne[0] += 3;
+                    textArea.setText(octalOne[0] + "");
+                }
+            }
         }
 
         if (e.getSource() == btnmult) {
@@ -590,9 +741,11 @@ public class Calculator extends JFrame implements ActionListener {
 
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
-                    numTwoHex[0].concat("2");
+                    numTwoHex[0] = numTwoHex[0] + "2";
+                    textArea.setText(numTwoHex[0]);
                 } else {
-                    numOneHex[0].concat("2");
+                    numOneHex[0] = numOneHex[0] + "2";
+                    textArea.setText(numOneHex[0]);
                 }
             }
 
@@ -617,6 +770,28 @@ public class Calculator extends JFrame implements ActionListener {
                     textArea.setText(tempNumOne[0] + "");
                 }
             }
+
+            if (currentSetting[0] == 3) {
+                if (tempOper[0] > 0) {
+                    if (octalTwo[0] == -1) {
+                        octalTwo[0] = 2;
+                        textArea.setText(octalTwo[0] + "");
+                    } else if (octalTwo[0] != -1) {
+                        octalTwo[0] = octalTwo[0] * 10;
+                        octalTwo[0] += 2;
+                        textArea.setText(octalTwo[0] + "");
+                    }
+
+                }
+                if (octalOne[0] == -1) {
+                    octalOne[0] = 2;
+                    textArea.setText(octalOne[0] + "");
+                } else if (octalOne[0] != -1 && tempOper[0] == 0) {
+                    octalOne[0] = octalOne[0] * 10;
+                    octalOne[0] += 2;
+                    textArea.setText(octalOne[0] + "");
+                }
+            }
         }
 
         if (e.getSource() == btnnum1) {
@@ -626,8 +801,10 @@ public class Calculator extends JFrame implements ActionListener {
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
                     numTwoHex[0] = numTwoHex[0] + "1";
+                    textArea.setText(numTwoHex[0]);
                 } else {
-                    numOneHex[0].concat("1");
+                    numOneHex[0] = numOneHex[0] + "1";
+                    textArea.setText(numOneHex[0]);
                 }
             }
 
@@ -650,6 +827,28 @@ public class Calculator extends JFrame implements ActionListener {
                     tempNumOne[0] = tempNumOne[0] * 10;
                     tempNumOne[0] = tempNumOne[0] + 1;
                     textArea.setText(tempNumOne[0] + "");
+                }
+            }
+
+            if (currentSetting[0] == 3) {
+                if (tempOper[0] > 0) {
+                    if (octalTwo[0] == -1) {
+                        octalTwo[0] = 1;
+                        textArea.setText(octalTwo[0] + "");
+                    } else if (octalTwo[0] != -1) {
+                        octalTwo[0] = octalTwo[0] * 10;
+                        octalTwo[0] += 1;
+                        textArea.setText(octalTwo[0] + "");
+                    }
+
+                }
+                if (octalOne[0] == -1) {
+                    octalOne[0] = 1;
+                    textArea.setText(octalOne[0] + "");
+                } else if (octalOne[0] != -1 && tempOper[0] == 0) {
+                    octalOne[0] = octalOne[0] * 10;
+                    octalOne[0] += 1;
+                    textArea.setText(octalOne[0] + "");
                 }
             }
 
@@ -682,9 +881,11 @@ public class Calculator extends JFrame implements ActionListener {
 
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
-                    numTwoHex[0].concat("6");
+                    numTwoHex[0] = numTwoHex[0] + "6";
+                    textArea.setText(numTwoHex[0]);
                 } else {
-                    numOneHex[0].concat("6");
+                    numOneHex[0] = numOneHex[0] + "6";
+                    textArea.setText(numOneHex[0]);
                 }
             }
 
@@ -700,14 +901,37 @@ public class Calculator extends JFrame implements ActionListener {
                     }
                 }
 
+
+                if (tempNumOne[0] == -1) {
+                    tempNumOne[0] = 6;
+                    textArea.setText(tempNumOne[0] + "");
+                } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                    tempNumOne[0] = tempNumOne[0] * 10;
+                    tempNumOne[0] = tempNumOne[0] + 6;
+                    textArea.setText(tempNumOne[0] + "");
+                }
             }
-            if (tempNumOne[0] == -1) {
-                tempNumOne[0] = 6;
-                textArea.setText(tempNumOne[0] + "");
-            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
-                tempNumOne[0] = tempNumOne[0] * 10;
-                tempNumOne[0] = tempNumOne[0] + 6;
-                textArea.setText(tempNumOne[0] + "");
+
+            if (currentSetting[0] == 3) {
+                if (tempOper[0] > 0) {
+                    if (octalTwo[0] == -1) {
+                        octalTwo[0] = 6;
+                        textArea.setText(octalTwo[0] + "");
+                    } else if (octalTwo[0] != -1) {
+                        octalTwo[0] = octalTwo[0] * 10;
+                        octalTwo[0] += 6;
+                        textArea.setText(octalTwo[0] + "");
+                    }
+
+                }
+                if (octalOne[0] == -1) {
+                    octalOne[0] = 6;
+                    textArea.setText(octalOne[0] + "");
+                } else if (octalOne[0] != -1 && tempOper[0] == 0) {
+                    octalOne[0] = octalOne[0] * 10;
+                    octalOne[0] += 6;
+                    textArea.setText(octalOne[0] + "");
+                }
             }
         }
 
@@ -717,9 +941,11 @@ public class Calculator extends JFrame implements ActionListener {
 
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
-                    numTwoHex[0].concat("5");
+                    numTwoHex[0] = numTwoHex[0] + "5";
+                    textArea.setText(numTwoHex[0]);
                 } else {
-                    numOneHex[0].concat("5");
+                    numOneHex[0] = numOneHex[0] + "5";
+                    textArea.setText(numOneHex[0]);
                 }
             }
 
@@ -734,14 +960,37 @@ public class Calculator extends JFrame implements ActionListener {
                         textArea.setText(tempNumTwo[0] + "");
                     }
                 }
+
+                if (tempNumOne[0] == -1) {
+                    tempNumOne[0] = 5;
+                    textArea.setText(tempNumOne[0] + "");
+                } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                    tempNumOne[0] = tempNumOne[0] * 10;
+                    tempNumOne[0] = tempNumOne[0] + 5;
+                    textArea.setText(tempNumOne[0] + "");
+                }
             }
-            if (tempNumOne[0] == -1) {
-                tempNumOne[0] = 5;
-                textArea.setText(tempNumOne[0] + "");
-            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
-                tempNumOne[0] = tempNumOne[0] * 10;
-                tempNumOne[0] = tempNumOne[0] + 5;
-                textArea.setText(tempNumOne[0] + "");
+
+            if (currentSetting[0] == 3) {
+                if (tempOper[0] > 0) {
+                    if (octalTwo[0] == -1) {
+                        octalTwo[0] = 5;
+                        textArea.setText(octalTwo[0] + "");
+                    } else if (octalTwo[0] != -1) {
+                        octalTwo[0] = octalTwo[0] * 10;
+                        octalTwo[0] += 5;
+                        textArea.setText(octalTwo[0] + "");
+                    }
+
+                }
+                if (octalOne[0] == -1) {
+                    octalOne[0] = 5;
+                    textArea.setText(octalOne[0] + "");
+                } else if (octalOne[0] != -1 && tempOper[0] == 0) {
+                    octalOne[0] = octalOne[0] * 10;
+                    octalOne[0] += 5;
+                    textArea.setText(octalOne[0] + "");
+                }
             }
         }
 
@@ -751,9 +1000,11 @@ public class Calculator extends JFrame implements ActionListener {
 
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
-                    numTwoHex[0].concat("4");
+                    numTwoHex[0] = numTwoHex[0] + "4";
+                    textArea.setText(numTwoHex[0]);
                 } else {
-                    numOneHex[0].concat("4");
+                    numOneHex[0] = numOneHex[0] + "4";
+                    textArea.setText(numOneHex[0]);
                 }
             }
 
@@ -768,14 +1019,37 @@ public class Calculator extends JFrame implements ActionListener {
                         textArea.setText(tempNumTwo[0] + "");
                     }
                 }
+
+                if (tempNumOne[0] == -1) {
+                    tempNumOne[0] = 4;
+                    textArea.setText(tempNumOne[0] + "");
+                } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                    tempNumOne[0] = tempNumOne[0] * 10;
+                    tempNumOne[0] = tempNumOne[0] + 4;
+                    textArea.setText(tempNumOne[0] + "");
+                }
             }
-            if (tempNumOne[0] == -1) {
-                tempNumOne[0] = 4;
-                textArea.setText(tempNumOne[0] + "");
-            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
-                tempNumOne[0] = tempNumOne[0] * 10;
-                tempNumOne[0] = tempNumOne[0] + 4;
-                textArea.setText(tempNumOne[0] + "");
+
+            if (currentSetting[0] == 3) {
+                if (tempOper[0] > 0) {
+                    if (octalTwo[0] == -1) {
+                        octalTwo[0] = 4;
+                        textArea.setText(octalTwo[0] + "");
+                    } else if (octalTwo[0] != -1) {
+                        octalTwo[0] = octalTwo[0] * 10;
+                        octalTwo[0] += 4;
+                        textArea.setText(octalTwo[0] + "");
+                    }
+
+                }
+                if (octalOne[0] == -1) {
+                    octalOne[0] = 4;
+                    textArea.setText(octalOne[0] + "");
+                } else if (octalOne[0] != -1 && tempOper[0] == 0) {
+                    octalOne[0] = octalOne[0] * 10;
+                    octalOne[0] += 4;
+                    textArea.setText(octalOne[0] + "");
+                }
             }
         }
 
@@ -789,9 +1063,11 @@ public class Calculator extends JFrame implements ActionListener {
 
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
-                    numTwoHex[0].concat("9");
+                    numTwoHex[0] = numTwoHex[0] + "9";
+                    textArea.setText(numTwoHex[0]);
                 } else {
-                    numOneHex[0].concat("9");
+                    numOneHex[0] = numOneHex[0] + "9";
+                    textArea.setText(numOneHex[0]);
                 }
             }
 
@@ -806,14 +1082,15 @@ public class Calculator extends JFrame implements ActionListener {
                         textArea.setText(tempNumTwo[0] + "");
                     }
                 }
-            }
-            if (tempNumOne[0] == -1) {
-                tempNumOne[0] = 9;
-                textArea.setText(tempNumOne[0] + "");
-            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
-                tempNumOne[0] = tempNumOne[0] * 10;
-                tempNumOne[0] = tempNumOne[0] + 9;
-                textArea.setText(tempNumOne[0] + "");
+
+                if (tempNumOne[0] == -1) {
+                    tempNumOne[0] = 9;
+                    textArea.setText(tempNumOne[0] + "");
+                } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                    tempNumOne[0] = tempNumOne[0] * 10;
+                    tempNumOne[0] = tempNumOne[0] + 9;
+                    textArea.setText(tempNumOne[0] + "");
+                }
             }
         }
 
@@ -823,9 +1100,11 @@ public class Calculator extends JFrame implements ActionListener {
 
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
-                    numTwoHex[0].concat("8");
+                    numTwoHex[0] = numTwoHex[0] + "8";
+                    textArea.setText(numTwoHex[0]);
                 } else {
-                    numOneHex[0].concat("8");
+                    numOneHex[0] = numOneHex[0] + "8";
+                    textArea.setText(numOneHex[0]);
                 }
             }
 
@@ -840,14 +1119,15 @@ public class Calculator extends JFrame implements ActionListener {
                         textArea.setText(tempNumTwo[0] + "");
                     }
                 }
-            }
-            if (tempNumOne[0] == -1) {
-                tempNumOne[0] = 8;
-                textArea.setText(tempNumOne[0] + "");
-            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
-                tempNumOne[0] = tempNumOne[0] * 10;
-                tempNumOne[0] = tempNumOne[0] + 8;
-                textArea.setText(tempNumOne[0] + "");
+
+                if (tempNumOne[0] == -1) {
+                    tempNumOne[0] = 8;
+                    textArea.setText(tempNumOne[0] + "");
+                } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                    tempNumOne[0] = tempNumOne[0] * 10;
+                    tempNumOne[0] = tempNumOne[0] + 8;
+                    textArea.setText(tempNumOne[0] + "");
+                }
             }
         }
 
@@ -857,9 +1137,11 @@ public class Calculator extends JFrame implements ActionListener {
 
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
-                    numTwoHex[0].concat("7");
+                    numTwoHex[0] = numTwoHex[0] + "7";
+                    textArea.setText(numTwoHex[0]);
                 } else {
-                    numOneHex[0].concat("7");
+                    numOneHex[0] = numOneHex[0] + "7";
+                    textArea.setText(numOneHex[0]);
                 }
             }
 
@@ -874,14 +1156,37 @@ public class Calculator extends JFrame implements ActionListener {
                         textArea.setText(tempNumTwo[0] + "");
                     }
                 }
+
+                if (tempNumOne[0] == -1) {
+                    tempNumOne[0] = 7;
+                    textArea.setText(tempNumOne[0] + "");
+                } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
+                    tempNumOne[0] = tempNumOne[0] * 10;
+                    tempNumOne[0] = tempNumOne[0] + 7;
+                    textArea.setText(tempNumOne[0] + "");
+                }
             }
-            if (tempNumOne[0] == -1) {
-                tempNumOne[0] = 7;
-                textArea.setText(tempNumOne[0] + "");
-            } else if (tempNumOne[0] != -1 && tempOper[0] == 0) {
-                tempNumOne[0] = tempNumOne[0] * 10;
-                tempNumOne[0] = tempNumOne[0] + 7;
-                textArea.setText(tempNumOne[0] + "");
+
+            if (currentSetting[0] == 3) {
+                if (tempOper[0] > 0) {
+                    if (octalTwo[0] == -1) {
+                        octalTwo[0] = 7;
+                        textArea.setText(octalTwo[0] + "");
+                    } else if (octalTwo[0] != -1) {
+                        octalTwo[0] = octalTwo[0] * 10;
+                        octalTwo[0] += 7;
+                        textArea.setText(octalTwo[0] + "");
+                    }
+
+                }
+                if (octalOne[0] == -1) {
+                    octalOne[0] = 7;
+                    textArea.setText(octalOne[0] + "");
+                } else if (octalOne[0] != -1 && tempOper[0] == 0) {
+                    octalOne[0] = octalOne[0] * 10;
+                    octalOne[0] += 7;
+                    textArea.setText(octalOne[0] + "");
+                }
             }
         }
 
@@ -893,6 +1198,10 @@ public class Calculator extends JFrame implements ActionListener {
             tempOper[0] = 0;
             binTwoArray.clear();
             binOneArray.clear();
+            octalOne[0] = -1;
+            octalTwo[0] = -1;
+            numOneHex[0] = "";
+            numTwoHex[0] = "";
 
         }
 
@@ -902,10 +1211,14 @@ public class Calculator extends JFrame implements ActionListener {
                     tempNumOne[0] = -1;
                     textArea.setText(0 + "");
                     binOneArray.clear();
+                    octalOne[0] = -1;
+                    numOneHex[0] = "";
                 } else {
                     tempNumTwo[0] = -1;
                     textArea.setText(0 + "");
                     binTwoArray.clear();
+                    octalTwo[0] = -1;
+                    numTwoHex[0] = "";
                 }
             }
         }
@@ -994,23 +1307,78 @@ public class Calculator extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == btnbs) {
-            if (tempOper[0] == 0 && tempNumOne[0] != -1) {
-                if (tempNumOne[0] >= 10) {
-                    tempNumOne[0] = tempNumOne[0] - lastEntry[0];
-                    tempNumOne[0] = tempNumOne[0] / 10;
-                    textArea.setText(tempNumOne[0] + "");
-                } else {
-                    tempNumOne[0] = 0;
-                    textArea.setText(tempNumOne[0] + "");
+
+            if (currentSetting[0] == 1) {
+
+                if (tempOper[0] == 0) {
+                    numOneHex[0] = numOneHex[0].substring(0, numOneHex[0].length()-1);
+                    textArea.setText(numOneHex[0]);
+                } else{
+                    numTwoHex[0] = numTwoHex[0].substring(0, numTwoHex[0].length()-1);
+                    textArea.setText(numTwoHex[0]);
                 }
-            } else if (tempOper[0] != 0 && tempNumTwo[0] != -1) {
-                if (tempNumTwo[0] >= 10 && tempOper[0] != 0) {
-                    tempNumTwo[0] = tempNumTwo[0] - lastEntry[0];
-                    tempNumTwo[0] = tempNumTwo[0] / 10;
-                    textArea.setText(tempNumTwo[0] + "");
-                } else {
-                    tempNumTwo[0] = 0;
-                    textArea.setText(tempNumTwo[0] + "");
+            }
+
+            if (currentSetting[0] == 2) {
+                if (tempOper[0] == 0 && tempNumOne[0] != -1) {
+                    if (tempNumOne[0] >= 10) {
+                        tempNumOne[0] = tempNumOne[0] - lastEntry[0];
+                        tempNumOne[0] = tempNumOne[0] / 10;
+                        textArea.setText(tempNumOne[0] + "");
+                    } else {
+                        tempNumOne[0] = 0;
+                        textArea.setText(tempNumOne[0] + "");
+                    }
+                } else if (tempOper[0] != 0 && tempNumTwo[0] != -1) {
+                    if (tempNumTwo[0] >= 10 && tempOper[0] != 0) {
+                        tempNumTwo[0] = tempNumTwo[0] - lastEntry[0];
+                        tempNumTwo[0] = tempNumTwo[0] / 10;
+                        textArea.setText(tempNumTwo[0] + "");
+                    } else {
+                        tempNumTwo[0] = 0;
+                        textArea.setText(tempNumTwo[0] + "");
+                    }
+                }
+            }
+
+            if (currentSetting[0] == 3) {
+                if (tempOper[0] == 0 && octalOne[0] != -1) {
+                    if (octalOne[0] >= 10) {
+                        octalOne[0] = octalOne[0] - lastEntry[0];
+                        octalOne[0] = octalOne[0] / 10;
+                        textArea.setText(octalOne[0] + "");
+                    } else {
+                        octalOne[0] = 0;
+                        textArea.setText(octalOne[0] + "");
+                    }
+                } else if (tempOper[0] != 0 && octalTwo[0] != -1) {
+                    if (octalTwo[0] >= 10 && tempOper[0] != 0) {
+                        octalTwo[0] = octalTwo[0] - lastEntry[0];
+                        octalTwo[0] = octalTwo[0] / 10;
+                        textArea.setText(octalTwo[0] + "");
+                    } else {
+                        octalTwo[0] = 0;
+                        textArea.setText(octalTwo[0] + "");
+                    }
+                }
+            }
+
+            if (currentSetting[0] == 4) {
+
+                if (tempOper[0] == 0) {
+                    binOneArray.remove(binOneArray.size() - 1);
+                    String binStringOne = "";
+                    for (int i = 0; i < binOneArray.size(); i ++) {
+                        binStringOne = binStringOne + binOneArray.get(i);
+                    }
+                    textArea.setText(binStringOne);
+                } else{
+                    binTwoArray.remove(binTwoArray.size() - 1);
+                    String binStringOne = "";
+                    for (int i = 0; i < binTwoArray.size(); i ++) {
+                        binStringOne = binStringOne + binTwoArray.get(i);
+                    }
+                    textArea.setText(binStringOne);
                 }
             }
         }
@@ -1032,10 +1400,10 @@ public class Calculator extends JFrame implements ActionListener {
         if (e.getSource() == btnA) {
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
-                    numTwoHex[0].concat("A");
+                    numTwoHex[0] = numTwoHex[0] + "A";
                     textArea.setText(numTwoHex[0]);
                 } else {
-                    numOneHex[0].concat("A");
+                    numOneHex[0] = numOneHex[0] + "A";
                     textArea.setText(numOneHex[0]);
                 }
             }
@@ -1044,10 +1412,10 @@ public class Calculator extends JFrame implements ActionListener {
         if (e.getSource() == btnB) {
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
-                    numTwoHex[0].concat("B");
+                    numTwoHex[0] = numTwoHex[0] + "B";
                     textArea.setText(numTwoHex[0]);
                 } else {
-                    numOneHex[0].concat("B");
+                    numOneHex[0] = numOneHex[0] + "B";
                     textArea.setText(numOneHex[0]);
                 }
             }
@@ -1056,10 +1424,10 @@ public class Calculator extends JFrame implements ActionListener {
         if (e.getSource() == btnC_1) {
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
-                    numTwoHex[0].concat("C");
+                    numTwoHex[0] = numTwoHex[0] + "C";
                     textArea.setText(numTwoHex[0]);
                 } else {
-                    numOneHex[0].concat("C");
+                    numOneHex[0] = numOneHex[0] + "C";
                     textArea.setText(numOneHex[0]);
                 }
             }
@@ -1068,10 +1436,10 @@ public class Calculator extends JFrame implements ActionListener {
         if (e.getSource() == btnD) {
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
-                    numTwoHex[0].concat("D");
+                    numTwoHex[0] = numTwoHex[0] + "D";
                     textArea.setText(numTwoHex[0]);
                 } else {
-                    numOneHex[0].concat("D");
+                    numOneHex[0] = numOneHex[0] + "D";
                     textArea.setText(numOneHex[0]);
                 }
             }
@@ -1080,10 +1448,10 @@ public class Calculator extends JFrame implements ActionListener {
         if (e.getSource() == btnE) {
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
-                    numTwoHex[0].concat("E");
+                    numTwoHex[0] = numTwoHex[0] + "E";
                     textArea.setText(numTwoHex[0]);
                 } else {
-                    numOneHex[0].concat("E");
+                    numOneHex[0] = numOneHex[0] + "E";
                     textArea.setText(numOneHex[0]);
                 }
             }
@@ -1092,21 +1460,46 @@ public class Calculator extends JFrame implements ActionListener {
         if (e.getSource() == btnF) {
             if (currentSetting[0] == 1) {
                 if (tempOper[0] > 0) {
-                    numTwoHex[0].concat("F");
+                    numTwoHex[0] = numTwoHex[0] + "F";
                     textArea.setText(numTwoHex[0]);
                 } else {
-                    numOneHex[0].concat("F");
+                    numOneHex[0] = numOneHex[0] + "F";
                     textArea.setText(numOneHex[0]);
                 }
             }
         }
 
+        // sets others false
+        if (e.getSource() == rdbtnQword) {
 
+                rdbtnQword.setSelected(true);
+                rdbtnWord.setSelected(false);
+                rdbtnDword.setSelected(false);
+                rdbtnByte.setSelected(false);
+        }
 
+        if (e.getSource() == rdbtnWord) {
 
+            rdbtnQword.setSelected(false);
+            rdbtnWord.setSelected(true);
+            rdbtnDword.setSelected(false);
+            rdbtnByte.setSelected(false);
+        }
 
+        if (e.getSource() == rdbtnDword) {
 
+            rdbtnQword.setSelected(false);
+            rdbtnWord.setSelected(false);
+            rdbtnDword.setSelected(true);
+            rdbtnByte.setSelected(false);
+        }
 
+        if (e.getSource() == rdbtnByte) {
 
+            rdbtnQword.setSelected(false);
+            rdbtnWord.setSelected(false);
+            rdbtnDword.setSelected(false);
+            rdbtnByte.setSelected(true);
+        }
     }
 }
