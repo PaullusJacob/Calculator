@@ -1,12 +1,16 @@
+// Jacob Paullus JDP160430
+// CS2336 Khan
+// Description: convert from binary to decimal
+
 public class bintodec {
-    public static int integerfrmbinary(String str){
-        double j=0;
-        for(int i=0;i<str.length();i++){
-            if(str.charAt(i)== '1'){
-                j=j+ Math.pow(2,str.length()-1-i);
+    public static int convert(String string){
+        double k=0;
+        for(int i=0;i<string.length();i++){
+            if(string.charAt(i)== '1'){
+                k=k+ Math.pow(2,string.length()-1-i);
             }
 
         }
-        return (int) j;
+        return (int) k;
     }
 }
