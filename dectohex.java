@@ -1,18 +1,22 @@
+// Jacob Paullus JDP160430
+// CS2336 Khan
+// Description: convert from decimal to hexadecimal
+
 public class dectohex {
 
 
     public static String convert(int number)
     {
-        int quotient = number / 16;
-        int remainder = number % 16;
+        int q = number / 16;
+        int r = number % 16;
 
-        if (quotient == 0) // base case
+        if (q == 0) // base case
         {
-            return Integer.toString(remainder);
+            return Integer.toString(r);
         }
         else
         {
-            return convert(quotient) + Integer.toString(remainder);
+            return convert(q) + Integer.toString(r);
         }
     }
 }
